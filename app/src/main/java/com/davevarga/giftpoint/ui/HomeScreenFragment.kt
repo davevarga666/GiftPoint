@@ -77,5 +77,15 @@ class HomeScreenFragment : Fragment(), SellerClickListener {
         findNavController().navigate(action)
     }
 
+    override fun onStart() {
+        super.onStart()
+        sellerAdapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        sellerAdapter.stopListening()
+    }
+
 
 }

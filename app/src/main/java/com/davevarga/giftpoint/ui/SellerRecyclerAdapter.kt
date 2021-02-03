@@ -49,14 +49,14 @@ class SellerRecyclerAdapter(options: FirestoreRecyclerOptions<Seller>, var click
 
         fun bind(seller: Seller, binding: SellerListItemBinding, clickListener: SellerClickListener) {
 
+            binding.seller = seller
+            Glide.with(itemView)
+                .load(seller.productImage)
+                .into(binding.couponImage)
             itemView.setOnClickListener {
                 clickListener.onItemClick(seller, adapterPosition)
             }
 
-            binding.seller = seller
-            Glide.with(itemView.context)
-                .load(seller.productImage)
-                .into(binding.couponImage)
 
 
         }
