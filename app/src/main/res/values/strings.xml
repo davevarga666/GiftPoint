@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">GiftPoint</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="couponimage">couponImage</string>
+    <string name="search">search</string>
+    <string name="up">up</string>
+    <string name="cart">cart</string>
+    <string name="enter_business_name">Enter business name</string>
+    <string name="background_image">background_image</string>
+    <string name="please_review_your_order">Please review your order</string>
+    <string name="payment_successful">Payment Successful!</string>
+    <string name="price_range">€10-€50</string>
+    <string name="cancel">cancel</string>
+    <string name="add_to_cart">add to cart</string>
+    <string name="buy_now">buy now</string>
+    <string name="_100">€100</string>
+    <string name="_50">€50</string>
+    <string name="_20">€20</string>
+    <string name="_10">€10</string>
+    <string name="enter_sender_email">Enter sender email</string>
+    <string name="enter_sender_name">Enter sender name</string>
+    <string name="from">From:</string>
+    <string name="enter_recipient_email">Enter recipient email</string>
+    <string name="enter_recipient_name">Enter recipient name</string>
+    <string name="to">To:</string>
+    <string name="you_pay">You pay: </string>
+    <string name="checkout">checkout</string>
+    <string name="remove_order">Remove Order</string>
+    <string name="featured">Featured</string>
+    <string name="seller">Seller:</string>
+    <string name="checkout_to">To:</string>
+    <string name="checkout_fromfrom">From:</string>
+    <string name="edit_order">Edit order</string>
+    <string name="hundred">$100</string>
+    <string name="fifty">$50</string>
+    <string name="twenty">$20</string>
+    <string name="ten">$10</string>
+</resources>

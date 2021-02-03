@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="seller"
+            type="com.davevarga.giftpoint.models.Seller" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/coupon_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/couponimage"
+            android:scaleType="centerCrop"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars"/>
+
+        <TextView
+            android:id="@+id/business_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{seller.sellerName}"
+            android:textColor="@android:color/white"
+            android:textSize="32sp"
+            android:shadowColor="#000000"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="1.6"
+            app:layout_constraintBottom_toTopOf="@+id/category"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Smoothie Bar" />
+
+        <TextView
+            android:id="@+id/category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{seller.productCategory}"
+            android:shadowColor="#000000"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="1.6"
+            app:layout_constraintBottom_toTopOf="@+id/business_address"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@tools:sample/date/hhmmss" />
+
+
+        <TextView
+            android:id="@+id/business_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{seller.businessAddress}"
+            android:shadowColor="#000000"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="1.6"
+            app:layout_constraintBottom_toTopOf="@id/coupon_value_range"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Broadway,NY" />
+
+        <TextView
+            android:id="@+id/coupon_value_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/price_range"
+            android:shadowColor="#000000"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="1.6"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="$10-$50" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

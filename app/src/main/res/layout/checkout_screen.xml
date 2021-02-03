@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <!--        <variable-->
+        <!--            name="sellerAtCheckout"-->
+        <!--            type="com.davevarga.giftpoint.models.Seller" />-->
+
+        <!--        <variable-->
+        <!--            name="senderAtCheckout"-->
+        <!--            type="com.davevarga.giftpoint.models.Sender" />-->
+
+        <!--        <variable-->
+        <!--            name="recipientAtCheckout"-->
+        <!--            type="com.davevarga.giftpoint.models.Recipient" />-->
+
+        <variable
+            name="orderAtCheckout"
+            type="com.davevarga.giftpoint.models.Order" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/orderReview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/please_review_your_order"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Please review your order" />
+
+        <LinearLayout
+            android:id="@+id/checkoutSellerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/checkoutRecipientLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/orderReview">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/sellerCheckout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/seller"
+                android:textSize="20sp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/sellerCheckoutName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{orderAtCheckout.seller.sellerName}"
+                android:textSize="20sp"
+                tools:text="Smoothie Bar" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/sellerCheckoutAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{orderAtCheckout.seller.businessAddress}"
+                android:textSize="20sp"
+                tools:text="Broadway, NY" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/checkoutRecipientLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@id/checkoutSenderLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkoutSellerLayout">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/checkoutTo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/to"
+                android:textSize="20sp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recipientCheckoutName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{orderAtCheckout.recipient.recipientName}"
+                android:textSize="20sp"
+                tools:text="Oliver Varga" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/recipientCheckoutEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{orderAtCheckout.recipient.recipientEmail}"
+                android:textSize="20sp"
+                tools:text="oliverv@gmail.com" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/checkoutSenderLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkoutRecipientLayout">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/checkoutFrom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/from"
+                android:textSize="20sp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/senderCheckoutName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{orderAtCheckout.sender.senderName}"
+                android:textSize="20sp"
+                tools:text="DavidVarga" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/senderCheckoutEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{orderAtCheckout.sender.senderEmail}"
+                android:textSize="20sp"
+                tools:text="davevarga999@gmail.com" />
+
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/editOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_order"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toTopOf="@id/orderSummaryLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkoutSenderLayout" />
+
+
+        <LinearLayout
+            android:id="@+id/orderSummaryLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkoutSenderLayout">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@{`You pay: ` + orderAtCheckout.orderValue}"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                tools:text="You pay: $10" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/removeOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/remove_order"
+                android:textColor="@android:color/black" />
+
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/checkoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/checkout"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/orderSummaryLayout"
+            app:layout_constraintVertical_bias="1.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "726389816339",
+    "project_id": "giftpoint-822a5",
+    "storage_bucket": "giftpoint-822a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726389816339:android:463b466d3c8110147e53e6",
+        "android_client_info": {
+          "package_name": "com.davevarga.giftpoint"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726389816339-45ab6e4j318q607964irsp386dsvhmvk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxDMlQFdFSZ-SB5XmMCf2azkr0uYyrqNM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726389816339-45ab6e4j318q607964irsp386dsvhmvk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
