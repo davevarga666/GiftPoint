@@ -2,21 +2,27 @@ package com.davevarga.giftpoint.ui
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.HomeScreenBinding
 import com.davevarga.giftpoint.models.Seller
+import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import kotlinx.android.synthetic.main.details_screen.*
 import kotlinx.android.synthetic.main.home_screen.*
 
 class HomeScreenFragment : Fragment(), SellerClickListener {
 
     private val db = FirebaseFirestore.getInstance()
+
     private val sellerRef = db.collection("sellers")
     private lateinit var sellerAdapter: SellerRecyclerAdapter
     private lateinit var binding: HomeScreenBinding
@@ -26,6 +32,7 @@ class HomeScreenFragment : Fragment(), SellerClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         setHasOptionsMenu(true)
         binding = DataBindingUtil.inflate(
             inflater,
@@ -51,7 +58,12 @@ class HomeScreenFragment : Fragment(), SellerClickListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_cart -> {
-                findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
+                if (orderInCart) {
+                    findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
+                } else {
+                    Toast.makeText(requireContext(), "Cart is empty", Toast.LENGTH_SHORT).show()
+                }
+
                 true
             }
             else -> super.onOptionsItemSelected(item)

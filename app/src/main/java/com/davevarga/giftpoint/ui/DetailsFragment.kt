@@ -1,6 +1,9 @@
 package com.davevarga.giftpoint.ui
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -14,12 +17,20 @@ import com.davevarga.giftpoint.models.Order
 import com.davevarga.giftpoint.models.Recipient
 import com.davevarga.giftpoint.models.Sender
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.details_screen.*
+
 
 class DetailFragment : Fragment() {
 
+    companion object {
+        var orderInCart = false
+    }
+
     private lateinit var binding: DetailsScreenBinding
     private val args: DetailFragmentArgs by navArgs()
+    private lateinit var mAuth: FirebaseAuth
+    private var namesEmpty: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +48,13 @@ class DetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mAuth = FirebaseAuth.getInstance()
+        val currentUser = mAuth.currentUser
+        namesEmpty = recipientName.toString().length == 0 && senderName.toString().length == 0
+
+        senderName.setText(currentUser?.displayName)
+        senderEmail.setText(currentUser?.email)
+
         binding.seller = args.sellerDetails
 
         Glide.with(view)
@@ -44,7 +62,6 @@ class DetailFragment : Fragment() {
             .into(binding.backgroundStill)
 
         addToCartBtn.setOnClickListener {
-            //save the object somewhere, load it in Checkout
             addOrder()
             findNavController().navigate(R.id.action_detailFragment_to_homeScreenFragment)
 
@@ -53,6 +70,12 @@ class DetailFragment : Fragment() {
             val action = DetailFragmentDirections.actionDetailFragmentToCheckoutFragment(addOrder())
             findNavController().navigate(action)
         }
+
+
+        recipientName.addTextChangedListener(createTextWatcher())
+        recipientEmail.addTextChangedListener(createTextWatcher())
+        senderName.addTextChangedListener(createTextWatcher())
+        senderEmail.addTextChangedListener(createTextWatcher())
 
     }
 
@@ -77,7 +100,6 @@ class DetailFragment : Fragment() {
     fun couponCheck(): String {
         val buttonId = toggleGroup.checkedButtonId
         val button: MaterialButton = toggleGroup.findViewById(buttonId)
-//        button.isChecked = true
         return when (button) {
             btn10 -> Coupon.TEN.couponValue
             btn20 -> Coupon.TWENTY.couponValue
@@ -95,6 +117,32 @@ class DetailFragment : Fragment() {
             recipientEmail.text.toString()
         )
         val coupon = couponCheck()
+        orderInCart = true
         return Order(seller!!, sender, recipient, coupon)
+    }
+
+    private fun createTextWatcher(): TextWatcher {
+        return object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+                if (charSequence.toString().isEmailValid() && !namesEmpty) {
+                    addToCartBtn.setEnabled(true)
+                    buyNowBtn.setEnabled(true)
+                }
+            }
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+
+            }
+        }
+
+    }
+
+    fun String.isEmailValid(): Boolean {
+        return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this)
+            .matches()
     }
 }

@@ -10,6 +10,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.CheckoutScreenBinding
+import com.davevarga.giftpoint.models.Order
+import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.checkout_screen.*
@@ -36,13 +38,16 @@ class CheckoutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.orderAtCheckout = args.orderToCheckout
 
         editOrder.setOnClickListener {
-            findNavController().navigate(R.id.action_checkoutFragment_to_detailFragment)
+//            findNavController().navigate(R.id.action_checkoutFragment_to_detailFragment)
+            findNavController().navigateUp()
         }
 
         removeOrder.setOnClickListener {
+            orderInCart = false
             findNavController().navigate(R.id.action_checkoutFragment_to_homeScreenFragment)
         }
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeScreenFragment">
+    app:startDestination="@id/signInFragment">
     <fragment
         android:id="@+id/homeScreenFragment"
         android:name="com.davevarga.giftpoint.ui.HomeScreenFragment"
@@ -71,6 +71,14 @@
             app:destination="@id/checkoutFragment" />
         <action
             android:id="@+id/action_paymentResultFragment_to_homeScreenFragment"
+            app:destination="@id/homeScreenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.davevarga.giftpoint.ui.SignInFragment"
+        android:label="SignInFragment" >
+        <action
+            android:id="@+id/action_signInFragment_to_homeScreenFragment"
             app:destination="@id/homeScreenFragment" />
     </fragment>
 </navigation>

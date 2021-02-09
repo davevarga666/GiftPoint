@@ -11,23 +11,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/searchField"
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/mySearchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
+            app:queryHint="Search businesses"
+            app:iconifiedByDefault="false"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/cancel">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/searchValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:hint="@string/enter_business_name"
-                tools:text="Enter business naem"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
+        <ListView
+            android:id="@+id/businessListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cancel"
@@ -38,8 +38,8 @@
             android:layout_margin="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searchField"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mySearchView"
             app:flow_verticalAlign="bottom"
             />
 
