@@ -20,13 +20,18 @@
             app:iconifiedByDefault="false"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/businessListView"
             />
 
         <ListView
             android:id="@+id/businessListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:visibility="invisible"
+            app:layout_constraintTop_toBottomOf="@+id/mySearchView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/cancel"
             />
 
         <com.google.android.material.button.MaterialButton
@@ -39,8 +44,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mySearchView"
-            app:flow_verticalAlign="bottom"
+            android:gravity="bottom"
+            app:layout_constraintTop_toBottomOf="@+id/businessListView"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

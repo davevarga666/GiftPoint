@@ -15,7 +15,6 @@ import com.davevarga.giftpoint.models.Seller
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.search_fragment.*
-import kotlinx.android.synthetic.main.seller_name_list_item.*
 
 class SearchFragment : Fragment(), SellerClickListener {
 
@@ -23,6 +22,7 @@ class SearchFragment : Fragment(), SellerClickListener {
     val TAG = "SearchFragment"
     private var sellerList = mutableListOf<Seller>()
     private var sellerNameList = mutableListOf<String>()
+    private lateinit var selectedItem: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,8 +38,16 @@ class SearchFragment : Fragment(), SellerClickListener {
 //        do this in vm
         getSellers()
 
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, sellerNameList)
+        val adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, sellerNameList)
         businessListView.adapter = adapter
+
+
+        cancel.setOnClickListener()
+        {
+            findNavController().navigate(R.id.action_searchFragment_to_homeScreenFragment)
+        }
+
         mySearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 mySearchView.clearFocus()
@@ -52,23 +60,21 @@ class SearchFragment : Fragment(), SellerClickListener {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
+                businessListView.visibility = View.VISIBLE
                 adapter.filter.filter(newText)
                 return false
             }
         })
 
-//        businessListView.onItemClickListener {
-//            sellerNameItem.liste {
-////                clickListener.onItemClick(seller, adapterPosition)
-//            }
-//        }
 
-        cancel.setOnClickListener {
-            findNavController().navigate(R.id.action_searchFragment_to_homeScreenFragment)
+        businessListView.setOnItemClickListener { parent, view, position, id ->
+            selectedItem = parent.getItemAtPosition(position) as String
+            val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(sortSeller())
+            findNavController().navigate(action)
         }
 
-
     }
+
 
     fun getSellers() {
         db.collection("sellers")
@@ -86,7 +92,19 @@ class SearchFragment : Fragment(), SellerClickListener {
     }
 
     override fun onItemClick(item: Seller, position: Int) {
-        val action = SearchFragmentDirections.actionSearchFragmentToDetailFragment(item)
-        findNavController().navigate(action)
     }
+
+    private fun sortSeller(): Seller {
+        var selectedSeller: Seller = Seller("", "", "", "", "")
+        for (i in sellerList) {
+            if (selectedItem == i.sellerName)
+                selectedSeller = i
+
+        }
+        return selectedSeller
+    }
+
 }
+
+
+
