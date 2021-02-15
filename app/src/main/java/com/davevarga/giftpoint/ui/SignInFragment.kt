@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.sign_in_screen.*
 class SignInFragment : Fragment() {
 
     companion object {
-        private const val SIGN_IN = 120
+        private const val SIGN_IN = 100
     }
 
     private lateinit var mAuth: FirebaseAuth

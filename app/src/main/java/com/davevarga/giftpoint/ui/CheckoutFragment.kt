@@ -53,12 +53,12 @@ class CheckoutFragment : Fragment() {
 
         checkoutButton.setOnClickListener {
             val newOrder = binding.orderAtCheckout
-            db.collection("orders").document("first")
+            db.collection("orders").document("second")
                 .set(newOrder as Any)
                 .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
                 .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
 
-            TODO("forward to payment")
+            findNavController().navigate(R.id.action_checkoutFragment_to_paymentInitFragment)
         }
 
 

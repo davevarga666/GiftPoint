@@ -37,4 +37,9 @@
     <string name="twenty">$20</string>
     <string name="ten">$10</string>
     <string name="sign_in">sign in</string>
+    <string name="thanks">Thank you for your payment</string>
+    <string name="select_payment_method">select payment method</string>
+    <string name="click_to_pay">Click to Pay</string>
+    <string name="please_pay_88">Please pay $88</string>
+    <string name="hellooo">Hello</string>
 </resources>
