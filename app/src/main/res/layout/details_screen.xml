@@ -299,15 +299,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/midLinear">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/addToCartBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="16dp"
-                android:enabled="false"
-                android:text="@string/add_to_cart"
-                android:textColor="@android:color/black" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buyNowBtn"

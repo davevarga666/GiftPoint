@@ -5,25 +5,18 @@ import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.HomeScreenBinding
 import com.davevarga.giftpoint.models.Seller
 import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.details_screen.*
-import kotlinx.android.synthetic.main.home_screen.*
+import com.davevarga.giftpoint.viewmodels.SellersViewModel
 
 class HomeScreenFragment : Fragment(), SellerClickListener {
 
-    private val db = FirebaseFirestore.getInstance()
-
-    private val sellerRef = db.collection("sellers")
+    private lateinit var sellersViewModel: SellersViewModel
     private lateinit var sellerAdapter: SellerRecyclerAdapter
     private lateinit var binding: HomeScreenBinding
 
@@ -45,8 +38,9 @@ class HomeScreenFragment : Fragment(), SellerClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        sellersViewModel = ViewModelProviders.of(this).get(SellersViewModel::class.java)
         setUpRecyclerView()
-        searchButton.setOnClickListener { view: View ->
+        binding.searchButton.setOnClickListener { view: View ->
             findNavController().navigate(R.id.action_homeScreenFragment_to_searchFragment)
         }
     }
@@ -63,7 +57,6 @@ class HomeScreenFragment : Fragment(), SellerClickListener {
                 } else {
                     Toast.makeText(requireContext(), "Cart is empty", Toast.LENGTH_SHORT).show()
                 }
-
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -71,12 +64,9 @@ class HomeScreenFragment : Fragment(), SellerClickListener {
     }
 
     fun setUpRecyclerView() {
-        val query = sellerRef.orderBy("sellerName", Query.Direction.ASCENDING)
-        val options = FirestoreRecyclerOptions.Builder<Seller>()
-            .setQuery(query, Seller::class.java)
-            .build()
-        sellerAdapter = SellerRecyclerAdapter(options, this)
-        recycler_view.apply {
+
+        sellerAdapter = SellerRecyclerAdapter(sellersViewModel.options, this)
+        binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)

@@ -59,19 +59,12 @@
             app:destination="@id/detailFragment" />
         <argument
             android:name="orderToCheckout"
-            app:argType="com.davevarga.giftpoint.models.Order" />
+            app:argType="com.davevarga.giftpoint.models.Order"
+            android:defaultValue="@null"
+            app:nullable="true"/>
         <action
             android:id="@+id/action_checkoutFragment_to_paymentInitFragment"
             app:destination="@id/paymentInitFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/paymentResultFragment"
-        android:name="com.davevarga.giftpoint.ui.PaymentResultFragment"
-        android:label="PaymentResultFragment"
-        tools:layout="@layout/payment_result">
-        <action
-            android:id="@+id/action_paymentResultFragment_to_homeScreenFragment"
-            app:destination="@id/homeScreenFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"

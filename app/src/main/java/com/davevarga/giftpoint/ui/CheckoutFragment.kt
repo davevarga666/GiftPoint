@@ -4,24 +4,25 @@ import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Button
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.CheckoutScreenBinding
 import com.davevarga.giftpoint.models.Order
 import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
+import com.davevarga.giftpoint.viewmodels.OrderViewModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.checkout_screen.*
 
 class CheckoutFragment : Fragment() {
 
     private lateinit var binding: CheckoutScreenBinding
+    private lateinit var orderViewModel: OrderViewModel
     private val args: CheckoutFragmentArgs by navArgs()
-    private val db = Firebase.firestore
-    private val TAG = "CheckoutFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,25 +40,22 @@ class CheckoutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        orderViewModel = ViewModelProviders.of(this).get(OrderViewModel::class.java)
         binding.orderAtCheckout = args.orderToCheckout
 
-        editOrder.setOnClickListener {
-//            findNavController().navigate(R.id.action_checkoutFragment_to_detailFragment)
-            findNavController().navigateUp()
+        binding.editOrder.setOnClickListener {
+            findNavController().navigate(R.id.action_checkoutFragment_to_detailFragment)
         }
 
-        removeOrder.setOnClickListener {
+        binding.removeOrder.setOnClickListener {
             orderInCart = false
             findNavController().navigate(R.id.action_checkoutFragment_to_homeScreenFragment)
         }
 
-        checkoutButton.setOnClickListener {
-            val newOrder = binding.orderAtCheckout
-            db.collection("orders").document("second")
-                .set(newOrder as Any)
-                .addOnSuccessListener { Log.d(TAG, "DocumentSnapshot successfully written!") }
-                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+        binding.checkoutButton.setOnClickListener {
+            orderViewModel.insert(binding.orderAtCheckout!!)
 
+            orderInCart = false
             findNavController().navigate(R.id.action_checkoutFragment_to_paymentInitFragment)
         }
 

@@ -7,16 +7,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.davevarga.giftpoint.R
+import com.davevarga.giftpoint.databinding.SignInScreenBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider.*
-import kotlinx.android.synthetic.main.sign_in_screen.*
+import com.google.firebase.auth.GoogleAuthProvider.getCredential
 
 class SignInFragment : Fragment() {
 
@@ -24,6 +25,7 @@ class SignInFragment : Fragment() {
         private const val SIGN_IN = 100
     }
 
+    private lateinit var binding: SignInScreenBinding
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
@@ -39,7 +41,12 @@ class SignInFragment : Fragment() {
             Log.i("SignInFragment", user.displayName.toString())
             findNavController().navigate(R.id.action_signInFragment_to_homeScreenFragment)
         }
-        return inflater.inflate(R.layout.sign_in_screen, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.sign_in_screen, container, false
+        )
+        return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,7 +60,7 @@ class SignInFragment : Fragment() {
 
         mAuth = FirebaseAuth.getInstance()
 
-        sign_in_btn.setOnClickListener {
+        binding.signInBtn.setOnClickListener {
             signIn()
         }
     }

@@ -1,7 +1,8 @@
 package com.davevarga.giftpoint.models
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import com.google.firebase.firestore.DocumentSnapshot
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Order(
@@ -11,4 +12,5 @@ data class Order(
     var recipient: Recipient,
     var orderValue: String
 ) : Parcelable {
+
 }

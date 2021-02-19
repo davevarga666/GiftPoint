@@ -2,15 +2,16 @@ package com.davevarga.giftpoint.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.davevarga.giftpoint.R
+import com.davevarga.giftpoint.databinding.PaymentInitFragmentBinding
+import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
 import com.davevarga.giftpoint.utils.FirebaseEphemeralKeyProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -20,18 +21,18 @@ import com.stripe.android.*
 import com.stripe.android.model.ConfirmPaymentIntentParams
 import com.stripe.android.model.PaymentMethod
 import com.stripe.android.view.BillingAddressFields
-import kotlinx.android.synthetic.main.payment_init_fragment.*
-import kotlinx.coroutines.delay
 
 class PaymentInitFragment : Fragment() {
 
+    private lateinit var binding: PaymentInitFragmentBinding
     private var currentUser: FirebaseUser? = null
     private lateinit var paymentSession: PaymentSession
     private lateinit var selectedPaymentMethod: PaymentMethod
     private val stripe: Stripe by lazy {
         Stripe(
             requireContext(),
-            PaymentConfiguration.getInstance(requireContext()).publishableKey)
+            PaymentConfiguration.getInstance(requireContext()).publishableKey
+        )
     }
 
     override fun onCreateView(
@@ -39,7 +40,11 @@ class PaymentInitFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.payment_init_fragment, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.payment_init_fragment, container, false
+        )
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,11 +57,11 @@ class PaymentInitFragment : Fragment() {
         currentUser = FirebaseAuth.getInstance().currentUser
         setupPaymentSession()
 
-        payButton.setOnClickListener {
+        binding.payButton.setOnClickListener {
             confirmPayment(selectedPaymentMethod.id!!)
         }
 
-        paymentmethod.setOnClickListener {
+        binding.paymentmethod.setOnClickListener {
             // Create the customer session and kick start the payment flow
             paymentSession.presentPaymentMethodSelection()
         }
@@ -64,7 +69,7 @@ class PaymentInitFragment : Fragment() {
     }
 
     private fun confirmPayment(paymentMethodId: String) {
-        payButton.isEnabled = false
+        binding.payButton.isEnabled = false
 
         val paymentCollection = Firebase.firestore
             .collection("stripe_customers").document(currentUser?.uid ?: "")
@@ -97,23 +102,22 @@ class PaymentInitFragment : Fragment() {
                                 )
                             )
 
-                            checkoutSummary.text = getString(R.string.thanks)
+                            binding.checkoutSummary.text = getString(R.string.thanks)
                             Toast.makeText(requireContext(), "Payment Done!!", Toast.LENGTH_LONG)
                                 .show()
-//                            Handler().postDelayed({
-//                                findNavController().navigate(R.id.action_paymentInitFragment_to_homeScreenFragment)
-//                            }, 3000)
+                            orderInCart = false
                         }
                     } else {
                         Log.e("payment", "Current payment intent : null")
-                        payButton.isEnabled = true
+                        binding.payButton.isEnabled = true
                     }
                 }
             }
             .addOnFailureListener { e ->
                 Log.w("payment", "Error adding document", e)
-                payButton.isEnabled = true
+                binding.payButton.isEnabled = true
             }
+
     }
 
     private fun setupPaymentSession() {
@@ -142,11 +146,11 @@ class PaymentInitFragment : Fragment() {
 
                     if (data.isPaymentReadyToCharge) {
                         Log.d("PaymentSession", "Ready to charge");
-                        payButton.isEnabled = true
+                        binding.payButton.isEnabled = true
 
                         data.paymentMethod?.let {
                             Log.d("PaymentSession", "PaymentMethod $it selected")
-                            paymentmethod.text =
+                            binding.paymentmethod.text =
                                 "${it.card?.brand} card ends with ${it.card?.last4}"
                             selectedPaymentMethod = it
                         }

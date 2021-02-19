@@ -1,7 +1,6 @@
 package com.davevarga.giftpoint.utils
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import com.davevarga.giftpoint.models.Order
 import com.davevarga.giftpoint.models.Seller
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -21,10 +20,6 @@ object FirebaseService {
             .build()
     }
 
-//    suspend fun getOrder(): LiveData<Order> {
-//        val db = FirebaseFirestore.getInstance()
-//
-//    }
 
     suspend fun insertOrder(order: Order) {
         val db = FirebaseFirestore.getInstance()

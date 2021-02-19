@@ -1,10 +1,10 @@
 package com.davevarga.giftpoint.models
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
-enum class Coupon(val couponValue: String) : Parcelable {
+enum class Coupon(val couponValue: String) : Parcelable  {
     TEN("$10"),
     TWENTY("$20"),
     FIFTY("$50"),
