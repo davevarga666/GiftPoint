@@ -13,46 +13,33 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.DetailsScreenBinding
+import com.davevarga.giftpoint.databinding.HomeScreenBinding
 import com.davevarga.giftpoint.models.Coupon
 import com.davevarga.giftpoint.models.Order
 import com.davevarga.giftpoint.models.Recipient
 import com.davevarga.giftpoint.models.Sender
+import com.davevarga.giftpoint.viewmodels.SellersViewModel
 import com.davevarga.giftpoint.viewmodels.SenderViewModel
 import com.google.android.material.button.MaterialButton
 
-class DetailFragment : Fragment() {
+class DetailFragment : BaseFragment<DetailsScreenBinding, SenderViewModel>() {
 
     companion object {
         var orderInCart = false
     }
 
-    private lateinit var senderViewModel: SenderViewModel
-    private lateinit var binding: DetailsScreenBinding
     private val args: DetailFragmentArgs by navArgs()
     private var namesEmpty: Boolean = true
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        setHasOptionsMenu(true)
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.details_screen, container, false
-        )
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        senderViewModel = ViewModelProviders.of(this).get(SenderViewModel::class.java)
         namesEmpty =
             binding.recipientName.toString().length == 0 && binding.senderName.toString().length == 0
 
-        binding.senderName.setText(senderViewModel.currentUser?.displayName)
-        binding.senderEmail.setText(senderViewModel.currentUser?.email)
+        binding.senderName.setText(viewModel.currentUser?.displayName)
+        binding.senderEmail.setText(viewModel.currentUser?.email)
 
         binding.seller = args.sellerDetails
 
@@ -136,4 +123,8 @@ class DetailFragment : Fragment() {
         return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this)
             .matches()
     }
+
+    override fun getFragmentView() = R.layout.details_screen
+
+    override fun getViewModel() = SenderViewModel::class.java
 }

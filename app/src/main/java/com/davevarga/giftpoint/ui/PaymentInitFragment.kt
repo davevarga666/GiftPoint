@@ -9,10 +9,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.davevarga.giftpoint.BuildConfig.STRIPE_API_KEY
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.PaymentInitFragmentBinding
 import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
 import com.davevarga.giftpoint.utils.FirebaseEphemeralKeyProvider
+import com.davevarga.giftpoint.viewmodels.PaymentViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
@@ -22,10 +24,8 @@ import com.stripe.android.model.ConfirmPaymentIntentParams
 import com.stripe.android.model.PaymentMethod
 import com.stripe.android.view.BillingAddressFields
 
-class PaymentInitFragment : Fragment() {
+class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding, PaymentViewModel>() {
 
-    private lateinit var binding: PaymentInitFragmentBinding
-    private var currentUser: FirebaseUser? = null
     private lateinit var paymentSession: PaymentSession
     private lateinit var selectedPaymentMethod: PaymentMethod
     private val stripe: Stripe by lazy {
@@ -35,26 +35,14 @@ class PaymentInitFragment : Fragment() {
         )
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.payment_init_fragment, container, false
-        )
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         PaymentConfiguration.init(
             requireContext(),
-            "pk_test_51ICrzAJUetAhy2B1Jxm7Ei1SoajWB74Qse329eJVcdm1moexF9ftaqbNhFdIQARBuAvxwlm222KQppTZ9z0r0Cob006Dzl98vK"
+            STRIPE_API_KEY
         )
-        currentUser = FirebaseAuth.getInstance().currentUser
+//        currentUser = FirebaseAuth.getInstance().currentUser
         setupPaymentSession()
 
         binding.payButton.setOnClickListener {
@@ -71,12 +59,8 @@ class PaymentInitFragment : Fragment() {
     private fun confirmPayment(paymentMethodId: String) {
         binding.payButton.isEnabled = false
 
-        val paymentCollection = Firebase.firestore
-            .collection("stripe_customers").document(currentUser?.uid ?: "")
-            .collection("payments")
-
         // Add a new document with a generated ID
-        paymentCollection.add(
+        viewModel.paymentCollection.add(
             hashMapOf(
                 "amount" to 100,
                 "currency" to "usd"
@@ -173,6 +157,10 @@ class PaymentInitFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         paymentSession.handlePaymentData(requestCode, resultCode, data ?: Intent())
     }
+
+    override fun getFragmentView() = R.layout.payment_init_fragment
+
+    override fun getViewModel() = PaymentViewModel::class.java
 
 
 }

@@ -24,6 +24,8 @@ android {
         versionCode 1
         versionName "1.0"
 
+        buildConfigField "String", "STRIPE_API_KEY", "\"pk_test_51ICrzAJUetAhy2B1Jxm7Ei1SoajWB74Qse329eJVcdm1moexF9ftaqbNhFdIQARBuAvxwlm222KQppTZ9z0r0Cob006Dzl98vK\""
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

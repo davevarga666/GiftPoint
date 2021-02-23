@@ -14,31 +14,14 @@ import com.davevarga.giftpoint.models.Seller
 import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
 import com.davevarga.giftpoint.viewmodels.SellersViewModel
 
-class HomeScreenFragment : Fragment(), SellerClickListener {
+class HomeScreenFragment : BaseFragment<HomeScreenBinding, SellersViewModel>(), SellerClickListener {
 
-    private lateinit var sellersViewModel: SellersViewModel
     private lateinit var sellerAdapter: SellerRecyclerAdapter
-    private lateinit var binding: HomeScreenBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        setHasOptionsMenu(true)
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.home_screen, container, false
-        )
-        return binding.root
-
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sellersViewModel = ViewModelProviders.of(this).get(SellersViewModel::class.java)
         setUpRecyclerView()
         binding.searchButton.setOnClickListener { view: View ->
             findNavController().navigate(R.id.action_homeScreenFragment_to_searchFragment)
@@ -65,7 +48,7 @@ class HomeScreenFragment : Fragment(), SellerClickListener {
 
     fun setUpRecyclerView() {
 
-        sellerAdapter = SellerRecyclerAdapter(sellersViewModel.options, this)
+        sellerAdapter = SellerRecyclerAdapter(viewModel.options, this)
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager =
@@ -89,5 +72,7 @@ class HomeScreenFragment : Fragment(), SellerClickListener {
         sellerAdapter.stopListening()
     }
 
+    override fun getFragmentView() = R.layout.home_screen
 
+    override fun getViewModel() = SellersViewModel::class.java
 }
