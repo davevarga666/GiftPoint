@@ -4,25 +4,33 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.view.*
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.DetailsScreenBinding
-import com.davevarga.giftpoint.databinding.HomeScreenBinding
+import com.davevarga.giftpoint.di.DaggerAppComponent
 import com.davevarga.giftpoint.models.Coupon
 import com.davevarga.giftpoint.models.Order
 import com.davevarga.giftpoint.models.Recipient
 import com.davevarga.giftpoint.models.Sender
-import com.davevarga.giftpoint.viewmodels.SellersViewModel
-import com.davevarga.giftpoint.viewmodels.SenderViewModel
+import com.davevarga.giftpoint.viewmodels.OrderViewModel
 import com.google.android.material.button.MaterialButton
+import javax.inject.Inject
 
-class DetailFragment : BaseFragment<DetailsScreenBinding, SenderViewModel>() {
+class DetailFragment : BaseFragment<DetailsScreenBinding>() {
+
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    lateinit var viewModel: OrderViewModel
+
 
     companion object {
         var orderInCart = false
@@ -35,11 +43,13 @@ class DetailFragment : BaseFragment<DetailsScreenBinding, SenderViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        DaggerAppComponent.create().inject(this)
+        viewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
         namesEmpty =
             binding.recipientName.toString().length == 0 && binding.senderName.toString().length == 0
 
-        binding.senderName.setText(viewModel.currentUser?.displayName)
-        binding.senderEmail.setText(viewModel.currentUser?.email)
+        binding.senderName.setText(viewModel.getUser()?.displayName)
+        binding.senderEmail.setText(viewModel.getUser()?.email)
 
         binding.seller = args.sellerDetails
 
@@ -125,6 +135,6 @@ class DetailFragment : BaseFragment<DetailsScreenBinding, SenderViewModel>() {
     }
 
     override fun getFragmentView() = R.layout.details_screen
-
-    override fun getViewModel() = SenderViewModel::class.java
+//
+//    override fun getViewModel() = SenderViewModel::class.java
 }

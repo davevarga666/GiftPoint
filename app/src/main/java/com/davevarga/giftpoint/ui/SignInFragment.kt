@@ -4,61 +4,51 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.SignInScreenBinding
+import com.davevarga.giftpoint.di.DaggerAppComponent
+import com.davevarga.giftpoint.viewmodels.SignInViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider.getCredential
+import javax.inject.Inject
 
-class SignInFragment : Fragment() {
+class SignInFragment : BaseFragment<SignInScreenBinding>() {
 
     companion object {
         private const val SIGN_IN = 100
     }
 
-    private lateinit var binding: SignInScreenBinding
-    private lateinit var mAuth: FirebaseAuth
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    lateinit var viewModel: SignInViewModel
+
+
     private lateinit var googleSignInClient: GoogleSignInClient
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        mAuth = FirebaseAuth.getInstance()
-        val user = mAuth.currentUser
-
-        if (user != null) {
-            Log.i("SignInFragment", user.displayName.toString())
-            findNavController().navigate(R.id.action_signInFragment_to_homeScreenFragment)
-        }
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.sign_in_screen, container, false
-        )
-        return binding.root
-
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Configure Google Sign In
+        DaggerAppComponent.create().inject(this)
+        viewModel = ViewModelProviders.of(this, factory).get(SignInViewModel::class.java)
+        val user = viewModel.getUser()
+        if (viewModel.getUser() != null) {
+            Log.i("SignInFragment", user?.displayName.toString())
+            findNavController().navigate(R.id.action_signInFragment_to_homeScreenFragment)
+        }
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
-        mAuth = FirebaseAuth.getInstance()
+        //mAuth = FirebaseAuth.getInstance()
 
         binding.signInBtn.setOnClickListener {
             signIn()
@@ -97,7 +87,7 @@ class SignInFragment : Fragment() {
 
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = getCredential(idToken, null)
-        mAuth.signInWithCredential(credential)
+        viewModel.getMAuth().signInWithCredential(credential)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     Log.d("SignInActivity", "signInWithCredential:success")
@@ -107,7 +97,10 @@ class SignInFragment : Fragment() {
 
                 }
 
-                // ...
             }
     }
+
+    override fun getFragmentView() = R.layout.sign_in_screen
+//
+//    override fun getViewModel() = SignInViewModel::class.java
 }

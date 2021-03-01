@@ -5,23 +5,31 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.SearchFragmentBinding
+import com.davevarga.giftpoint.di.DaggerAppComponent
 import com.davevarga.giftpoint.models.Seller
 import com.davevarga.giftpoint.viewmodels.SellersViewModel
+import javax.inject.Inject
 
-class SearchFragment : BaseFragment<SearchFragmentBinding, SellersViewModel>(),
+class SearchFragment : BaseFragment<SearchFragmentBinding>(),
     SellerClickListener {
+
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    lateinit var viewModel: SellersViewModel
 
     private lateinit var selectedItem: String
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SellersViewModel::class.java)
-        viewModel.getSellers()
+        DaggerAppComponent.create().inject(this)
+        viewModel = ViewModelProviders.of(this, factory).get(SellersViewModel::class.java)
+        viewModel.getSellersList()
 
         val adapter =
             ArrayAdapter(
@@ -82,8 +90,8 @@ class SearchFragment : BaseFragment<SearchFragmentBinding, SellersViewModel>(),
     }
 
     override fun getFragmentView() = R.layout.search_fragment
-
-    override fun getViewModel() = SellersViewModel::class.java
+//
+//    override fun getViewModel() = SellersViewModel::class.java
 
 }
 

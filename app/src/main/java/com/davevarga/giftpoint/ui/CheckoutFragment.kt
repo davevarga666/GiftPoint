@@ -5,22 +5,31 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.CheckoutScreenBinding
+import com.davevarga.giftpoint.di.DaggerAppComponent
 import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
 import com.davevarga.giftpoint.viewmodels.OrderViewModel
+import javax.inject.Inject
 
-class CheckoutFragment : BaseFragment<CheckoutScreenBinding, OrderViewModel>() {
+class CheckoutFragment : BaseFragment<CheckoutScreenBinding>() {
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    lateinit var viewModel: OrderViewModel
+
     private val args: CheckoutFragmentArgs by navArgs()
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this).get(viewModel::class.java)
+        DaggerAppComponent.create().inject(this)
+        viewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
+//        viewModel = ViewModelProviders.of(this).get(viewModel::class.java)
         binding.orderAtCheckout = args.orderToCheckout
 
         binding.editOrder.setOnClickListener {
@@ -57,6 +66,4 @@ class CheckoutFragment : BaseFragment<CheckoutScreenBinding, OrderViewModel>() {
     }
 
     override fun getFragmentView() = R.layout.checkout_screen
-
-    override fun getViewModel() = OrderViewModel::class.java
 }

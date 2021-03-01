@@ -1,27 +1,36 @@
 package com.davevarga.giftpoint.ui
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.HomeScreenBinding
+import com.davevarga.giftpoint.di.DaggerAppComponent
 import com.davevarga.giftpoint.models.Seller
 import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
 import com.davevarga.giftpoint.viewmodels.SellersViewModel
+import javax.inject.Inject
 
-class HomeScreenFragment : BaseFragment<HomeScreenBinding, SellersViewModel>(), SellerClickListener {
+class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListener {
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    lateinit var viewModel: SellersViewModel
 
     private lateinit var sellerAdapter: SellerRecyclerAdapter
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        DaggerAppComponent.create().inject(this)
+        viewModel = ViewModelProviders.of(this, factory).get(SellersViewModel::class.java)
         setUpRecyclerView()
         binding.searchButton.setOnClickListener { view: View ->
             findNavController().navigate(R.id.action_homeScreenFragment_to_searchFragment)
@@ -73,6 +82,6 @@ class HomeScreenFragment : BaseFragment<HomeScreenBinding, SellersViewModel>(), 
     }
 
     override fun getFragmentView() = R.layout.home_screen
-
-    override fun getViewModel() = SellersViewModel::class.java
+//
+//    override fun getViewModel() = SellersViewModel::class.java
 }

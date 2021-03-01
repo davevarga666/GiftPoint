@@ -6,8 +6,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import javax.inject.Inject
 
-class SenderViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
+class SignInViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
     fun getUser() = repository.currentUser
+    fun getMAuth() = repository.mAuth
 
 }

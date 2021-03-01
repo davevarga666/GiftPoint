@@ -3,28 +3,28 @@ package com.davevarga.giftpoint.ui
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.davevarga.giftpoint.BuildConfig.STRIPE_API_KEY
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.PaymentInitFragmentBinding
+import com.davevarga.giftpoint.di.DaggerAppComponent
 import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
 import com.davevarga.giftpoint.utils.FirebaseEphemeralKeyProvider
 import com.davevarga.giftpoint.viewmodels.PaymentViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.stripe.android.*
 import com.stripe.android.model.ConfirmPaymentIntentParams
 import com.stripe.android.model.PaymentMethod
 import com.stripe.android.view.BillingAddressFields
+import javax.inject.Inject
 
-class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding, PaymentViewModel>() {
+class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
+
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
+    lateinit var viewModel: PaymentViewModel
 
     private lateinit var paymentSession: PaymentSession
     private lateinit var selectedPaymentMethod: PaymentMethod
@@ -37,6 +37,9 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding, PaymentView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        DaggerAppComponent.create().inject(this)
+        viewModel = ViewModelProviders.of(this, factory).get(PaymentViewModel::class.java)
 
         PaymentConfiguration.init(
             requireContext(),
@@ -60,7 +63,7 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding, PaymentView
         binding.payButton.isEnabled = false
 
         // Add a new document with a generated ID
-        viewModel.paymentCollection.add(
+        viewModel.getPaymentCollection().add(
             hashMapOf(
                 "amount" to 100,
                 "currency" to "usd"
@@ -159,8 +162,6 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding, PaymentView
     }
 
     override fun getFragmentView() = R.layout.payment_init_fragment
-
-    override fun getViewModel() = PaymentViewModel::class.java
 
 
 }
