@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "726389816339-7d1scf65m999gq9qgno900k1un939djb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.davevarga.giftpoint",
+            "certificate_hash": "84c1e09dda6783e6f037f81a695ff22a2dedbce6"
+          }
+        },
+        {
           "client_id": "726389816339-45ab6e4j318q607964irsp386dsvhmvk.apps.googleusercontent.com",
           "client_type": 3
         }

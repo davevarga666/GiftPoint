@@ -5,25 +5,18 @@ import androidx.appcompat.app.AppCompatActivity
 import com.davevarga.giftpoint.ui.HomeScreenFragment
 import com.davevarga.giftpoint.ui.SignInFragment
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-//    private lateinit var mAuth: FirebaseAuth
+    companion object {
+        private const val SIGN_IN = 100
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        mAuth = FirebaseAuth.getInstance()
-//        val user = mAuth.currentUser
-//
-//        if (user != null) {
-//            supportFragmentManager.beginTransaction()
-//                .add(R.id.homeScreenFragment, HomeScreenFragment())
-//
-//        } else {
-//            supportFragmentManager.beginTransaction().add(R.id.signInFragment, SignInFragment())
-////                finish()
-//        }
     }
 }

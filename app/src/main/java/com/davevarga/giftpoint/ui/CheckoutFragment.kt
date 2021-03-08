@@ -11,11 +11,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.CheckoutScreenBinding
-import com.davevarga.giftpoint.di.DaggerAppComponent
 import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
 import com.davevarga.giftpoint.viewmodels.OrderViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class CheckoutFragment : BaseFragment<CheckoutScreenBinding>() {
 
     @Inject
@@ -27,23 +28,22 @@ class CheckoutFragment : BaseFragment<CheckoutScreenBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        DaggerAppComponent.create().inject(this)
         viewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
-//        viewModel = ViewModelProviders.of(this).get(viewModel::class.java)
         binding.orderAtCheckout = args.orderToCheckout
+//        binding.orderAtCheckout = viewModel.order
 
         binding.editOrder.setOnClickListener {
+            viewModel.removeOrder()
             findNavController().navigate(R.id.action_checkoutFragment_to_detailFragment)
         }
 
         binding.removeOrder.setOnClickListener {
             orderInCart = false
+            viewModel.removeOrder()
             findNavController().navigate(R.id.action_checkoutFragment_to_homeScreenFragment)
         }
 
         binding.checkoutButton.setOnClickListener {
-            viewModel.insert(binding.orderAtCheckout!!)
-
             orderInCart = false
             findNavController().navigate(R.id.action_checkoutFragment_to_paymentInitFragment)
         }

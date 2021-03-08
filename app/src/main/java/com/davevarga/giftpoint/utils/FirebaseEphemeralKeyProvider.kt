@@ -20,7 +20,6 @@ class FirebaseEphemeralKeyProvider: EphemeralKeyProvider {
             "api_version" to apiVersion
         )
 
-        // User firebase to call the functions
         Firebase.functions
             .getHttpsCallable("createEphemeralKey")
             .call(data)

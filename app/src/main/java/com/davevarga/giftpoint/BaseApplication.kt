@@ -1,22 +1,19 @@
 package com.davevarga.giftpoint
 
-import com.davevarga.giftpoint.di.DaggerAppComponent
+import android.app.Application
 import com.stripe.android.PaymentConfiguration
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
-//declare later in Manifest as base class
-//class BaseApplication : DaggerApplication() {
-//
-//    override fun onCreate() {
-//        super.onCreate()
-//        PaymentConfiguration.init(
-//            applicationContext,
-//            BuildConfig.STRIPE_API_KEY
-//        )
-//    }
-//
-//    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-//        return DaggerAppComponent.builder().application(this).build()
-//    }
-//}
+
+@HiltAndroidApp
+class BaseApplication @Inject constructor() : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+        PaymentConfiguration.init(
+            applicationContext,
+            BuildConfig.STRIPE_API_KEY
+        )
+    }
+}

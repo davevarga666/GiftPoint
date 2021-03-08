@@ -1,3 +1,4 @@
+
 package com.davevarga.giftpoint.ui
 
 import android.content.Intent
@@ -10,7 +11,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.davevarga.giftpoint.BuildConfig.STRIPE_API_KEY
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.PaymentInitFragmentBinding
-import com.davevarga.giftpoint.di.DaggerAppComponent
 import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
 import com.davevarga.giftpoint.utils.FirebaseEphemeralKeyProvider
 import com.davevarga.giftpoint.viewmodels.PaymentViewModel
@@ -18,8 +18,10 @@ import com.stripe.android.*
 import com.stripe.android.model.ConfirmPaymentIntentParams
 import com.stripe.android.model.PaymentMethod
 import com.stripe.android.view.BillingAddressFields
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
 
     @Inject
@@ -38,14 +40,12 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        DaggerAppComponent.create().inject(this)
         viewModel = ViewModelProviders.of(this, factory).get(PaymentViewModel::class.java)
 
         PaymentConfiguration.init(
             requireContext(),
             STRIPE_API_KEY
         )
-//        currentUser = FirebaseAuth.getInstance().currentUser
         setupPaymentSession()
 
         binding.payButton.setOnClickListener {
@@ -64,10 +64,7 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
 
         // Add a new document with a generated ID
         viewModel.getPaymentCollection().add(
-            hashMapOf(
-                "amount" to 100,
-                "currency" to "usd"
-            )
+            viewModel.couponRef
         )
             .addOnSuccessListener { documentReference ->
                 Log.d("payment", "DocumentSnapshot added with ID: ${documentReference.id}")

@@ -1,5 +1,6 @@
 package com.davevarga.giftpoint.factory
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import javax.inject.Inject

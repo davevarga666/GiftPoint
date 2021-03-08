@@ -12,12 +12,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.HomeScreenBinding
-import com.davevarga.giftpoint.di.DaggerAppComponent
 import com.davevarga.giftpoint.models.Seller
 import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
 import com.davevarga.giftpoint.viewmodels.SellersViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListener {
 
     @Inject
@@ -29,7 +30,6 @@ class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        DaggerAppComponent.create().inject(this)
         viewModel = ViewModelProviders.of(this, factory).get(SellersViewModel::class.java)
         setUpRecyclerView()
         binding.searchButton.setOnClickListener { view: View ->
@@ -57,7 +57,7 @@ class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListene
 
     fun setUpRecyclerView() {
 
-        sellerAdapter = SellerRecyclerAdapter(viewModel.options, this)
+        sellerAdapter = SellerRecyclerAdapter(viewModel.getOptions(), this)
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager =
@@ -82,6 +82,5 @@ class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListene
     }
 
     override fun getFragmentView() = R.layout.home_screen
-//
-//    override fun getViewModel() = SellersViewModel::class.java
+
 }

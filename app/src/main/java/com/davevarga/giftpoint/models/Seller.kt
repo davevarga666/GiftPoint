@@ -6,7 +6,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Seller(
-//    var sellerId: Int = -1,
     var sellerName: String = "",
     var sellerEmail: String = "",
     var productImage: String = "",

@@ -15,22 +15,21 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.DetailsScreenBinding
-import com.davevarga.giftpoint.di.DaggerAppComponent
 import com.davevarga.giftpoint.models.Coupon
 import com.davevarga.giftpoint.models.Order
 import com.davevarga.giftpoint.models.Recipient
 import com.davevarga.giftpoint.models.Sender
 import com.davevarga.giftpoint.viewmodels.OrderViewModel
 import com.google.android.material.button.MaterialButton
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class DetailFragment : BaseFragment<DetailsScreenBinding>() {
-
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
     lateinit var viewModel: OrderViewModel
-
 
     companion object {
         var orderInCart = false
@@ -39,12 +38,12 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
     private val args: DetailFragmentArgs by navArgs()
     private var namesEmpty: Boolean = true
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        DaggerAppComponent.create().inject(this)
         viewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
+
+        //to vm
         namesEmpty =
             binding.recipientName.toString().length == 0 && binding.senderName.toString().length == 0
 
@@ -58,6 +57,7 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
             .into(binding.backgroundStill)
 
         binding.buyNowBtn.setOnClickListener {
+            viewModel.insert(addOrder())
             val action = DetailFragmentDirections.actionDetailFragmentToCheckoutFragment(addOrder())
             findNavController().navigate(action)
         }
@@ -87,6 +87,7 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
 
     fun couponCheck(): String {
         val buttonId = binding.toggleGroup.checkedButtonId

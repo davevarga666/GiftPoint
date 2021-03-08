@@ -11,14 +11,4 @@ data class Recipient(
     var recipientEmail: String
 ) : Parcelable {
 
-//    companion object {
-//        fun DocumentSnapshot.toRecipient() : Recipient? {
-//            val name = getString("recipientName")!!
-//            val email = getString("recipientEmail")!!
-//
-//            return Recipient(name, email)
-//
-//        }
-//    }
-
 }
