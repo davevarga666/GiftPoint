@@ -29,8 +29,10 @@ class CheckoutFragment : BaseFragment<CheckoutScreenBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
-        binding.orderAtCheckout = args.orderToCheckout
-//        binding.orderAtCheckout = viewModel.order
+//        binding.orderAtCheckout = args.orderToCheckout
+        viewModel.showPendingOrder()
+        binding.orderAtCheckout = viewModel.order
+
 
         binding.editOrder.setOnClickListener {
             viewModel.removeOrder()

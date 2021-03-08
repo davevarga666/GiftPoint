@@ -58,6 +58,7 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
 
         binding.buyNowBtn.setOnClickListener {
             viewModel.insert(addOrder())
+
             val action = DetailFragmentDirections.actionDetailFragmentToCheckoutFragment(addOrder())
             findNavController().navigate(action)
         }
@@ -110,7 +111,7 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
         )
         val coupon = couponCheck()
         orderInCart = true
-        return Order(seller!!, sender, recipient, coupon)
+        return Order( coupon,  recipient, seller!!, sender)
     }
 
     private fun createTextWatcher(): TextWatcher {

@@ -7,8 +7,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Recipient(
 //    var recipientId: Int,
-    var recipientName: String,
-    var recipientEmail: String
+    var recipientName: String = "",
+    var recipientEmail: String = ""
 ) : Parcelable {
 
 }

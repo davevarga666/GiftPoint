@@ -6,10 +6,10 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Order(
 //    var orderId: Int,
-    var seller: Seller = Seller("", "", "", "", "", ""),
-    var sender: Sender = Sender("", ""),
+    var orderValue: String = "",
     var recipient: Recipient = Recipient("", ""),
-    var orderValue: String = ""
+    var seller: Seller = Seller("", "", "", "", "", ""),
+    var sender: Sender = Sender("", "")
 ) : Parcelable {
 
 }
