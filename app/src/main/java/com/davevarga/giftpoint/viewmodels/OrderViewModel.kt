@@ -2,6 +2,8 @@ package com.davevarga.giftpoint.viewmodels
 
 import android.content.ContentValues
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.davevarga.giftpoint.models.Order
@@ -16,7 +18,8 @@ class OrderViewModel @Inject constructor(private val repository: Repository) : V
     private val db = repository.db
     private val orderRef = db.collection("orders")
     fun getUser() = repository.currentUser
-    var order: Order? = Order()
+    private val _order = MutableLiveData<Order>()
+    val order: LiveData<Order> = _order
 
 
     fun insert(newOrder: Order) {
@@ -37,12 +40,17 @@ class OrderViewModel @Inject constructor(private val repository: Repository) : V
     }
 
     fun showPendingOrder() {
-        val docRef = orderRef.document("first")
-        docRef.get()
-            .addOnSuccessListener { documentSnaphot ->
-                order = documentSnaphot.toObject<Order>()
 
-            }
+        viewModelScope.launch {
+            val docRef = orderRef.document("first")
+            docRef.get()
+                .addOnSuccessListener { documentSnaphot ->
+                    _order.value = documentSnaphot.toObject<Order>()
+
+
+                }
+        }
+
     }
 
     fun removeOrder() {

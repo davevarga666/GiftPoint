@@ -29,6 +29,7 @@ class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListene
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
 
         viewModel = ViewModelProviders.of(this, factory).get(SellersViewModel::class.java)
         setUpRecyclerView()
@@ -49,6 +50,7 @@ class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListene
                 } else {
                     Toast.makeText(requireContext(), "Cart is empty", Toast.LENGTH_SHORT).show()
                 }
+                findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
                 true
             }
             else -> super.onOptionsItemSelected(item)

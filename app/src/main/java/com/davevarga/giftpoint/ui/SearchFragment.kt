@@ -26,7 +26,7 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this, factory).get(SellersViewModel::class.java)
-        viewModel.sellerList
+        viewModel.getSellers()
 
         val adapter =
             ArrayAdapter(

@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -27,6 +28,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class DetailFragment : BaseFragment<DetailsScreenBinding>() {
 
+    lateinit var couponValue: String
+
     @Inject
     lateinit var factory: ViewModelProvider.Factory
     lateinit var viewModel: OrderViewModel
@@ -40,6 +43,7 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
 
         viewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
 
@@ -52,6 +56,7 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
 
         binding.seller = args.sellerDetails
 
+
         Glide.with(view)
             .load(args.sellerDetails.productImage)
             .into(binding.backgroundStill)
@@ -61,6 +66,19 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
 
             val action = DetailFragmentDirections.actionDetailFragmentToCheckoutFragment(addOrder())
             findNavController().navigate(action)
+        }
+
+        binding.toggleGroup.addOnButtonCheckedListener{
+                group, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.btn10 -> couponValue = Coupon.TEN.couponValue
+                    R.id.btn20 -> couponValue = Coupon.TWENTY.couponValue
+                    R.id.btn50 -> couponValue = Coupon.FIFTY.couponValue
+                    R.id.btn100 -> couponValue = Coupon.HUNDRED.couponValue
+                    else -> couponValue = Coupon.ZERO.couponValue
+                }
+            }
         }
 
 
@@ -90,17 +108,17 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
     }
 
 
-    fun couponCheck(): String {
-        val buttonId = binding.toggleGroup.checkedButtonId
-        val button: MaterialButton = binding.toggleGroup.findViewById(buttonId)
-        return when (button) {
-            binding.btn10 -> Coupon.TEN.couponValue
-            binding.btn20 -> Coupon.TWENTY.couponValue
-            binding.btn50 -> Coupon.FIFTY.couponValue
-            binding.btn100 -> Coupon.HUNDRED.couponValue
-            else -> Coupon.ZERO.couponValue
-        }
-    }
+
+        //should use livedata
+//        val button: MaterialButton = binding.toggleGroup.findViewById(buttonId)
+//        return when (button) {
+//            binding.btn10 -> Coupon.TEN.couponValue
+//            binding.btn20 -> Coupon.TWENTY.couponValue
+//            binding.btn50 -> Coupon.FIFTY.couponValue
+//            binding.btn100 -> Coupon.HUNDRED.couponValue
+//            else -> Coupon.ZERO.couponValue
+//        }
+
 
     fun addOrder(): Order {
         val seller = binding.seller
@@ -109,9 +127,8 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
             binding.recipientName.text.toString(),
             binding.recipientEmail.text.toString()
         )
-        val coupon = couponCheck()
         orderInCart = true
-        return Order( coupon,  recipient, seller!!, sender)
+        return Order("$10",  recipient, seller!!, sender)
     }
 
     private fun createTextWatcher(): TextWatcher {

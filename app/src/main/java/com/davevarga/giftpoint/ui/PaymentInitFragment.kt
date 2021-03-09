@@ -63,21 +63,22 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
         binding.payButton.isEnabled = false
 
         // Add a new document with a generated ID
+        paymentCollection(paymentMethodId)
+
+    }
+
+    private fun paymentCollection(paymentMethodId: String) {
         viewModel.getPaymentCollection().add(
             viewModel.couponRef
         )
             .addOnSuccessListener { documentReference ->
-                Log.d("payment", "DocumentSnapshot added with ID: ${documentReference.id}")
                 documentReference.addSnapshotListener { snapshot, e ->
                     if (e != null) {
-                        Log.w("payment", "Listen failed.", e)
                         return@addSnapshotListener
                     }
 
                     if (snapshot != null && snapshot.exists()) {
-                        Log.d("payment", "Current data: ${snapshot.data}")
                         val clientSecret = snapshot.data?.get("client_secret")
-                        Log.d("payment", "Create paymentIntent returns $clientSecret")
                         clientSecret?.let {
                             stripe.confirmPayment(
                                 this, ConfirmPaymentIntentParams.createWithPaymentMethodId(
@@ -87,53 +88,36 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
                             )
 
                             binding.checkoutSummary.text = getString(R.string.thanks)
-                            Toast.makeText(requireContext(), "Payment Done!!", Toast.LENGTH_LONG)
-                                .show()
                             orderInCart = false
                         }
                     } else {
-                        Log.e("payment", "Current payment intent : null")
                         binding.payButton.isEnabled = true
                     }
                 }
             }
             .addOnFailureListener { e ->
-                Log.w("payment", "Error adding document", e)
                 binding.payButton.isEnabled = true
             }
-
     }
 
     private fun setupPaymentSession() {
         // Setup Customer Session
         CustomerSession.initCustomerSession(requireContext(), FirebaseEphemeralKeyProvider())
         // Setup a payment session
-        paymentSession = PaymentSession(
-            this, PaymentSessionConfig.Builder()
-                .setShippingInfoRequired(false)
-                .setShippingMethodsRequired(false)
-                .setBillingAddressFields(BillingAddressFields.None)
-                .setPaymentMethodTypes(
-                    listOf(PaymentMethod.Type.Card)
-                )
-                .setShouldShowGooglePay(true)
-                .build()
-        )
+        paymentSessionDetails()
+        initPaymentSession()
+
+    }
+
+    private fun initPaymentSession() {
         paymentSession.init(
             object : PaymentSession.PaymentSessionListener {
                 override fun onPaymentSessionDataChanged(data: PaymentSessionData) {
-                    Log.d("PaymentSession", "PaymentSession has changed: $data")
-                    Log.d(
-                        "PaymentSession",
-                        "${data.isPaymentReadyToCharge} <> ${data.paymentMethod}"
-                    )
 
                     if (data.isPaymentReadyToCharge) {
-                        Log.d("PaymentSession", "Ready to charge");
                         binding.payButton.isEnabled = true
 
                         data.paymentMethod?.let {
-                            Log.d("PaymentSession", "PaymentMethod $it selected")
                             binding.paymentmethod.text =
                                 "${it.card?.brand} card ends with ${it.card?.last4}"
                             selectedPaymentMethod = it
@@ -150,7 +134,20 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
                 }
             }
         )
+    }
 
+    private fun paymentSessionDetails() {
+        paymentSession = PaymentSession(
+            this, PaymentSessionConfig.Builder()
+                .setShippingInfoRequired(false)
+                .setShippingMethodsRequired(false)
+                .setBillingAddressFields(BillingAddressFields.None)
+                .setPaymentMethodTypes(
+                    listOf(PaymentMethod.Type.Card)
+                )
+                .setShouldShowGooglePay(true)
+                .build()
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

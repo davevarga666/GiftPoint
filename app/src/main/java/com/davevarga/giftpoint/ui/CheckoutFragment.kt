@@ -5,6 +5,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -23,15 +24,16 @@ class CheckoutFragment : BaseFragment<CheckoutScreenBinding>() {
     lateinit var factory: ViewModelProvider.Factory
     lateinit var viewModel: OrderViewModel
 
-    private val args: CheckoutFragmentArgs by navArgs()
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
 
         viewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
-//        binding.orderAtCheckout = args.orderToCheckout
         viewModel.showPendingOrder()
-        binding.orderAtCheckout = viewModel.order
+
+        viewModel.order.observe(viewLifecycleOwner, Observer {
+            binding.orderAtCheckout = it
+        })
 
 
         binding.editOrder.setOnClickListener {

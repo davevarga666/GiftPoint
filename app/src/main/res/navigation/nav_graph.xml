@@ -56,7 +56,11 @@
             app:destination="@id/homeScreenFragment" />
         <action
             android:id="@+id/action_checkoutFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment" >
+            <argument
+                android:name="sellerDetails"
+                app:argType="com.davevarga.giftpoint.models.Seller"/>
+        </action>
         <argument
             android:name="orderToCheckout"
             app:argType="com.davevarga.giftpoint.models.Order"

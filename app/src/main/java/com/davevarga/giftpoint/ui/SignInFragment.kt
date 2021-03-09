@@ -34,11 +34,16 @@ class SignInFragment : BaseFragment<SignInScreenBinding>() {
         viewModel = ViewModelProviders.of(this, TempSignInFactory(requireActivity().application))
             .get(SignInViewModel::class.java)
 
+        proceed()
+    }
+
+    private fun proceed() {
         if (viewModel.getUser() != null) {
             findNavController().navigate(R.id.action_signInFragment_to_homeScreenFragment)
         }
 
-        googleSignInClient = GoogleSignIn.getClient(requireActivity(), viewModel.getMyGso(requireContext()))
+        googleSignInClient =
+            GoogleSignIn.getClient(requireActivity(), viewModel.getMyGso(requireContext()))
 
 
         binding.signInBtn.setOnClickListener {
