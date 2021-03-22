@@ -60,6 +60,14 @@ android {
         jvmTarget = '1.8'
     }
 
+    testOptions {
+        animationsDisabled = true
+        unitTests {
+            includeAndroidResources = true
+            returnDefaultValues = true
+        }
+    }
+
 }
 
 dependencies {
@@ -103,7 +111,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
     implementation "com.google.firebase:firebase-database:19.6.0"
-    implementation 'com.google.firebase:firebase-firestore:22.1.0'
+    implementation 'com.google.firebase:firebase-firestore:22.1.1'
     implementation 'com.firebaseui:firebase-ui-firestore:6.3.0'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.1"
     implementation 'com.firebaseui:firebase-ui-storage:4.3.2'
@@ -126,5 +134,8 @@ dependencies {
     //Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    //Mockito
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
 
 }

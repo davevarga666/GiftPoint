@@ -46,10 +46,9 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
         setHasOptionsMenu(true)
 
         viewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
+        couponValue = Coupon.TEN.couponValue
 
-        //to vm
-        namesEmpty =
-            binding.recipientName.toString().length == 0 && binding.senderName.toString().length == 0
+        checkFields()
 
         binding.senderName.setText(viewModel.getUser()?.displayName)
         binding.senderEmail.setText(viewModel.getUser()?.email)
@@ -58,7 +57,7 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
 
 
         Glide.with(view)
-            .load(args.sellerDetails.productImage)
+            .load(args.sellerDetails!!.productImage)
             .into(binding.backgroundStill)
 
         binding.buyNowBtn.setOnClickListener {
@@ -87,6 +86,11 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
         binding.senderName.addTextChangedListener(createTextWatcher())
         binding.senderEmail.addTextChangedListener(createTextWatcher())
 
+    }
+
+    private fun checkFields() {
+        namesEmpty =
+            binding.recipientName.toString().length == 0 && binding.senderName.toString().length == 0
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -128,7 +132,8 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
             binding.recipientEmail.text.toString()
         )
         orderInCart = true
-        return Order("$10",  recipient, seller!!, sender)
+//        return Order("$10",  recipient, seller!!, sender)
+        return Order(couponValue,  recipient, seller!!, sender)
     }
 
     private fun createTextWatcher(): TextWatcher {

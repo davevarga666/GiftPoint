@@ -1,6 +1,7 @@
 package com.davevarga.giftpoint
 
 import android.app.Application
+import com.google.firebase.FirebaseApp
 import com.stripe.android.PaymentConfiguration
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject

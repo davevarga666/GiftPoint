@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable
+            name="order"
+            type="com.davevarga.giftpoint.models.Order" />
 
     </data>
 
@@ -26,8 +29,8 @@
             android:id="@+id/checkoutSummary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/please_pay_88"
             android:textAlignment="center"
+            android:text="@{`Please pay ` + order.orderValue}"
             android:textColor="@color/colorPrimary"
             android:paddingVertical="20dp"
             app:layout_constraintBottom_toTopOf="@+id/paymentmethod"

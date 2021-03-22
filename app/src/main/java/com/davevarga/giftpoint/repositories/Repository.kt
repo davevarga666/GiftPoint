@@ -1,6 +1,5 @@
-package com.davevarga.giftpoint.repository
+package com.davevarga.giftpoint.repositories
 
-import android.app.Application
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject

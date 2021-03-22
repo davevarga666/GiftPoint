@@ -1,4 +1,3 @@
-
 package com.davevarga.giftpoint.ui
 
 import android.content.Intent
@@ -6,13 +5,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.*
+import androidx.navigation.fragment.findNavController
 import com.davevarga.giftpoint.BuildConfig.STRIPE_API_KEY
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.PaymentInitFragmentBinding
+import com.davevarga.giftpoint.models.Order
 import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
 import com.davevarga.giftpoint.utils.FirebaseEphemeralKeyProvider
+import com.davevarga.giftpoint.viewmodels.OrderViewModel
 import com.davevarga.giftpoint.viewmodels.PaymentViewModel
 import com.stripe.android.*
 import com.stripe.android.model.ConfirmPaymentIntentParams
@@ -24,9 +25,11 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
 
+
     @Inject
     lateinit var factory: ViewModelProvider.Factory
-    lateinit var viewModel: PaymentViewModel
+    lateinit var paymentViewModel: PaymentViewModel
+    lateinit var orderViewModel: OrderViewModel
 
     private lateinit var paymentSession: PaymentSession
     private lateinit var selectedPaymentMethod: PaymentMethod
@@ -40,7 +43,15 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this, factory).get(PaymentViewModel::class.java)
+        paymentViewModel = ViewModelProviders.of(this, factory).get(PaymentViewModel::class.java)
+        orderViewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
+        orderViewModel.showPendingOrder()
+
+        orderViewModel.order.observe(viewLifecycleOwner, Observer<Order> {
+            binding.order = it
+        })
+
+
 
         PaymentConfiguration.init(
             requireContext(),
@@ -59,6 +70,7 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
 
     }
 
+
     private fun confirmPayment(paymentMethodId: String) {
         binding.payButton.isEnabled = false
 
@@ -68,17 +80,19 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
     }
 
     private fun paymentCollection(paymentMethodId: String) {
-        viewModel.getPaymentCollection().add(
-            viewModel.couponRef
+        paymentViewModel.getPaymentCollection().add(
+            orderViewModel.getCouponRef()
         )
             .addOnSuccessListener { documentReference ->
                 documentReference.addSnapshotListener { snapshot, e ->
                     if (e != null) {
                         return@addSnapshotListener
+
                     }
 
                     if (snapshot != null && snapshot.exists()) {
                         val clientSecret = snapshot.data?.get("client_secret")
+                        Log.i("PaymentInit", "payment snapshot exists")
                         clientSecret?.let {
                             stripe.confirmPayment(
                                 this, ConfirmPaymentIntentParams.createWithPaymentMethodId(
@@ -86,9 +100,10 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
                                     (it as String)
                                 )
                             )
-
+                            Log.i("PaymentInit", "payment successful")
                             binding.checkoutSummary.text = getString(R.string.thanks)
-                            orderInCart = false
+                            orderViewModel.removeOrder()
+                            findNavController().navigate(R.id.action_paymentInitFragment_to_homeScreenFragment)
                         }
                     } else {
                         binding.payButton.isEnabled = true
@@ -97,6 +112,7 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
             }
             .addOnFailureListener { e ->
                 binding.payButton.isEnabled = true
+                Log.i("PaymentInit", "payment failed")
             }
     }
 
@@ -105,6 +121,7 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
         CustomerSession.initCustomerSession(requireContext(), FirebaseEphemeralKeyProvider())
         // Setup a payment session
         paymentSessionDetails()
+        Log.i("PaymentInit", "payment set up")
         initPaymentSession()
 
     }

@@ -40,6 +40,6 @@
     <string name="thanks">Thank you for your payment</string>
     <string name="select_payment_method">select payment method</string>
     <string name="click_to_pay">Click to Pay</string>
-    <string name="please_pay_88">Please pay $88</string>
     <string name="hellooo">Hello</string>
+    <string name="please_pay_88">Please pay $88</string>
 </resources>

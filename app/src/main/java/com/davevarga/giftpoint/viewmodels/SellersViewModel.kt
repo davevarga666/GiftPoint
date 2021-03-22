@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.davevarga.giftpoint.models.Seller
-import com.davevarga.giftpoint.repository.Repository
+import com.davevarga.giftpoint.repositories.Repository
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.launch

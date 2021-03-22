@@ -37,6 +37,7 @@ class CheckoutFragment : BaseFragment<CheckoutScreenBinding>() {
 
 
         binding.editOrder.setOnClickListener {
+            //handle nav in different use cases
             viewModel.removeOrder()
             findNavController().navigate(R.id.action_checkoutFragment_to_detailFragment)
         }

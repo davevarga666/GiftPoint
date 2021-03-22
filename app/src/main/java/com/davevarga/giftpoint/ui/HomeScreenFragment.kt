@@ -14,6 +14,7 @@ import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.HomeScreenBinding
 import com.davevarga.giftpoint.models.Seller
 import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
+import com.davevarga.giftpoint.viewmodels.OrderViewModel
 import com.davevarga.giftpoint.viewmodels.SellersViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -23,7 +24,8 @@ class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListene
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
-    lateinit var viewModel: SellersViewModel
+    lateinit var sellersViewModel: SellersViewModel
+    lateinit var orderViewModel: OrderViewModel
 
     private lateinit var sellerAdapter: SellerRecyclerAdapter
 
@@ -31,8 +33,10 @@ class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListene
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        viewModel = ViewModelProviders.of(this, factory).get(SellersViewModel::class.java)
+        sellersViewModel = ViewModelProviders.of(this, factory).get(SellersViewModel::class.java)
+        orderViewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
         setUpRecyclerView()
+        orderViewModel.showPendingOrder()
         binding.searchButton.setOnClickListener { view: View ->
             findNavController().navigate(R.id.action_homeScreenFragment_to_searchFragment)
         }
@@ -45,12 +49,12 @@ class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListene
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_cart -> {
-                if (orderInCart) {
-                    findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
-                } else {
+                if (orderViewModel.isCartEmpty()) {
                     Toast.makeText(requireContext(), "Cart is empty", Toast.LENGTH_SHORT).show()
+                } else {
+                    findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
                 }
-                findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
+//                findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -59,7 +63,7 @@ class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListene
 
     fun setUpRecyclerView() {
 
-        sellerAdapter = SellerRecyclerAdapter(viewModel.getOptions(), this)
+        sellerAdapter = SellerRecyclerAdapter(sellersViewModel.getOptions(), this)
         binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager =
