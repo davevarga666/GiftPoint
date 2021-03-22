@@ -33,6 +33,7 @@ class CheckoutFragment : BaseFragment<CheckoutScreenBinding>() {
 
         viewModel.order.observe(viewLifecycleOwner, Observer {
             binding.orderAtCheckout = it
+            binding.youPay.text = "You pay " + binding.orderAtCheckout!!.orderValue.dropLast(2)
         })
 
 

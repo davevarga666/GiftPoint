@@ -2,6 +2,8 @@ package com.davevarga.giftpoint.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -47,11 +49,10 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
         orderViewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
         orderViewModel.showPendingOrder()
 
-        orderViewModel.order.observe(viewLifecycleOwner, Observer<Order> {
+        orderViewModel.order.observe(viewLifecycleOwner, Observer {
             binding.order = it
+            binding.checkoutSummary.text = "Please pay " + binding.order!!.orderValue.dropLast(2)
         })
-
-
 
         PaymentConfiguration.init(
             requireContext(),
@@ -91,8 +92,9 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
                     }
 
                     if (snapshot != null && snapshot.exists()) {
+                        Log.d("payment", "Current data: ${snapshot.data}")
                         val clientSecret = snapshot.data?.get("client_secret")
-                        Log.i("PaymentInit", "payment snapshot exists")
+                        Log.d("payment", "Create paymentIntent returns $clientSecret")
                         clientSecret?.let {
                             stripe.confirmPayment(
                                 this, ConfirmPaymentIntentParams.createWithPaymentMethodId(
@@ -103,7 +105,10 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
                             Log.i("PaymentInit", "payment successful")
                             binding.checkoutSummary.text = getString(R.string.thanks)
                             orderViewModel.removeOrder()
-                            findNavController().navigate(R.id.action_paymentInitFragment_to_homeScreenFragment)
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                findNavController().navigate(R.id.action_paymentInitFragment_to_homeScreenFragment)
+                            }, 3000)
+
                         }
                     } else {
                         binding.payButton.isEnabled = true

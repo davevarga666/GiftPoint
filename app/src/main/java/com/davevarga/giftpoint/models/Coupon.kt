@@ -5,10 +5,10 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 enum class Coupon(val couponValue: String) : Parcelable  {
-    TEN("$10"),
-    TWENTY("$20"),
-    FIFTY("$50"),
-    HUNDRED("$100"),
+    TEN("$1000"),
+    TWENTY("$2000"),
+    FIFTY("$5000"),
+    HUNDRED("$10000"),
 //    for else branch
     ZERO("$0")
 
