@@ -8,7 +8,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -21,7 +20,6 @@ import com.davevarga.giftpoint.models.Order
 import com.davevarga.giftpoint.models.Recipient
 import com.davevarga.giftpoint.models.Sender
 import com.davevarga.giftpoint.viewmodels.OrderViewModel
-import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -34,9 +32,6 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
     lateinit var factory: ViewModelProvider.Factory
     lateinit var viewModel: OrderViewModel
 
-    companion object {
-        var orderInCart = false
-    }
 
     private val args: DetailFragmentArgs by navArgs()
     private var namesEmpty: Boolean = true
@@ -53,12 +48,14 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
         binding.senderName.setText(viewModel.getUser()?.displayName)
         binding.senderEmail.setText(viewModel.getUser()?.email)
 
-        binding.seller = args.sellerDetails
 
+        binding.seller = args.sellerDetails
 
         Glide.with(view)
             .load(args.sellerDetails!!.productImage)
             .into(binding.backgroundStill)
+
+
 
         binding.buyNowBtn.setOnClickListener {
             viewModel.insert(addOrder())
@@ -67,8 +64,7 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
             findNavController().navigate(action)
         }
 
-        binding.toggleGroup.addOnButtonCheckedListener{
-                group, checkedId, isChecked ->
+        binding.toggleGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
             if (isChecked) {
                 when (checkedId) {
                     R.id.btn10 -> couponValue = Coupon.TEN.couponValue
@@ -112,8 +108,7 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
     }
 
 
-
-        //should use livedata
+    //should use livedata
 //        val button: MaterialButton = binding.toggleGroup.findViewById(buttonId)
 //        return when (button) {
 //            binding.btn10 -> Coupon.TEN.couponValue
@@ -131,9 +126,8 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
             binding.recipientName.text.toString(),
             binding.recipientEmail.text.toString()
         )
-        orderInCart = true
 //        return Order("$10",  recipient, seller!!, sender)
-        return Order(couponValue,  recipient, seller!!, sender)
+        return Order(couponValue, recipient, seller!!, sender)
     }
 
     private fun createTextWatcher(): TextWatcher {

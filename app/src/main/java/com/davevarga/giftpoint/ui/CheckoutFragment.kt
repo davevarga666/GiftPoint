@@ -9,10 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.CheckoutScreenBinding
-import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
 import com.davevarga.giftpoint.viewmodels.OrderViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -40,17 +38,15 @@ class CheckoutFragment : BaseFragment<CheckoutScreenBinding>() {
         binding.editOrder.setOnClickListener {
             //handle nav in different use cases
             viewModel.removeOrder()
-            findNavController().navigate(R.id.action_checkoutFragment_to_detailFragment)
+            findNavController().navigateUp()
         }
 
         binding.removeOrder.setOnClickListener {
-            orderInCart = false
             viewModel.removeOrder()
             findNavController().navigate(R.id.action_checkoutFragment_to_homeScreenFragment)
         }
 
         binding.checkoutButton.setOnClickListener {
-            orderInCart = false
             findNavController().navigate(R.id.action_checkoutFragment_to_paymentInitFragment)
         }
 

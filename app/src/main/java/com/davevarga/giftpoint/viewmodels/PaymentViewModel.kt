@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.davevarga.giftpoint.repositories.Repository
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FieldPath
+import com.google.firebase.firestore.Query
 import javax.inject.Inject
 
 class PaymentViewModel @Inject constructor(application: Application) :
@@ -15,10 +17,8 @@ class PaymentViewModel @Inject constructor(application: Application) :
 
     private lateinit var paymentCollection: CollectionReference
 
-
     fun getPaymentCollection(): CollectionReference {
         paymentCollection = db
-            .collection("stripe_customers").document(repository.currentUser?.uid ?: "")
             .collection("payments")
 
         return paymentCollection

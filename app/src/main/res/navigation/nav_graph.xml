@@ -35,6 +35,12 @@
             app:argType="com.davevarga.giftpoint.models.Seller"
             app:nullable="true"
             android:defaultValue="@null"/>
+
+        <argument
+            android:name="orderDetails"
+            app:argType="com.davevarga.giftpoint.models.Order"
+            app:nullable="true"
+            android:defaultValue="@null"/>
     </fragment>
     <fragment
         android:id="@+id/searchFragment"

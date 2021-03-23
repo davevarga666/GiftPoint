@@ -6,14 +6,13 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.lifecycle.*
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.davevarga.giftpoint.BuildConfig.STRIPE_API_KEY
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.PaymentInitFragmentBinding
-import com.davevarga.giftpoint.models.Order
-import com.davevarga.giftpoint.ui.DetailFragment.Companion.orderInCart
 import com.davevarga.giftpoint.utils.FirebaseEphemeralKeyProvider
 import com.davevarga.giftpoint.viewmodels.OrderViewModel
 import com.davevarga.giftpoint.viewmodels.PaymentViewModel
@@ -85,40 +84,73 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
             orderViewModel.getCouponRef()
         )
             .addOnSuccessListener { documentReference ->
-                documentReference.addSnapshotListener { snapshot, e ->
-                    if (e != null) {
-                        return@addSnapshotListener
-
-                    }
-
-                    if (snapshot != null && snapshot.exists()) {
-                        Log.d("payment", "Current data: ${snapshot.data}")
-                        val clientSecret = snapshot.data?.get("client_secret")
-                        Log.d("payment", "Create paymentIntent returns $clientSecret")
-                        clientSecret?.let {
-                            stripe.confirmPayment(
-                                this, ConfirmPaymentIntentParams.createWithPaymentMethodId(
-                                    paymentMethodId,
-                                    (it as String)
+                documentReference.get()
+                    .addOnSuccessListener { documentSnapshot ->
+                        if (documentSnapshot != null && documentSnapshot.exists()) {
+                            Log.d("payment", "Current data: ${documentSnapshot.data}")
+                            val clientSecret = documentSnapshot.data?.get("client_secret")
+                            Log.d("payment", "Create paymentIntent returns $clientSecret")
+                            clientSecret?.let {
+                                stripe.confirmPayment(
+                                    this, ConfirmPaymentIntentParams.createWithPaymentMethodId(
+                                        paymentMethodId,
+                                        (it as String)
+                                    )
                                 )
-                            )
-                            Log.i("PaymentInit", "payment successful")
-                            binding.checkoutSummary.text = getString(R.string.thanks)
-                            orderViewModel.removeOrder()
-                            Handler(Looper.getMainLooper()).postDelayed({
-                                findNavController().navigate(R.id.action_paymentInitFragment_to_homeScreenFragment)
-                            }, 3000)
+                                Log.i("PaymentInit", "payment successful")
+                                binding.checkoutSummary.text = getString(R.string.thanks)
+                                orderViewModel.removeOrder()
+                                Handler(Looper.getMainLooper()).postDelayed({
+                                    findNavController().navigate(R.id.action_paymentInitFragment_to_homeScreenFragment)
+                                }, 3000)
 
+                            }
+
+
+                        } else {
+                            binding.payButton.isEnabled = true
                         }
-                    } else {
-                        binding.payButton.isEnabled = true
                     }
-                }
             }
             .addOnFailureListener { e ->
                 binding.payButton.isEnabled = true
                 Log.i("PaymentInit", "payment failed")
             }
+//            .addOnSuccessListener { documentReference ->
+//                documentReference.addSnapshotListener { snapshot, e ->
+//                    if (e != null) {
+//                        return@addSnapshotListener
+//
+//                    }
+
+//                    if (snapshot != null && snapshot.exists()) {
+//                        Log.d("payment", "Current data: ${snapshot.data}")
+//                        val clientSecret = snapshot.data?.get("client_secret")
+//                        Log.d("payment", "Create paymentIntent returns $clientSecret")
+//                        clientSecret?.let {
+//                            stripe.confirmPayment(
+//                                this, ConfirmPaymentIntentParams.createWithPaymentMethodId(
+//                                    paymentMethodId,
+//                                    (it as String)
+//                                )
+//                            )
+//                            Log.i("PaymentInit", "payment successful")
+//                            binding.checkoutSummary.text = getString(R.string.thanks)
+//                            orderViewModel.removeOrder()
+//                            Handler(Looper.getMainLooper()).postDelayed({
+//                                findNavController().navigate(R.id.action_paymentInitFragment_to_homeScreenFragment)
+//                            }, 3000)
+//
+//                        }
+//                    } else {
+//                        binding.payButton.isEnabled = true
+//                    }
+//                }
+//            }
+//            .addOnFailureListener { e ->
+//                binding.payButton.isEnabled = true
+//                Log.i("PaymentInit", "payment failed")
+//            }
     }
 
     private fun setupPaymentSession() {
