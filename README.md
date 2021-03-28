@@ -17,7 +17,6 @@ The gift coupon is automatically sent out to the recipient.
 
 ## Media
 
-https://drive.google.com/file/d/1J33j9Ith4tpA6h-tSbzGXuNLPEx1J5id/view?usp=sharing
-1J33j9Ith4tpA6h-tSbzGXuNLPEx1J5id
+<a href="https://drive.google.com/uc?export=view&id=1J33j9Ith4tpA6h-tSbzGXuNLPEx1J5id"><img src="https://drive.google.com/uc?export=view&id=1J33j9Ith4tpA6h-tSbzGXuNLPEx1J5id" style="width: 650px; max-width: 100%; height: auto" title="Click to enlarge picture" />
 
 <a href="https://drive.google.com/uc?export=view&id=1J33j9Ith4tpA6h-tSbzGXuNLPEx1J5id"><img src="https://drive.google.com/uc?export=view&id=1J33j9Ith4tpA6h-tSbzGXuNLPEx1J5id" style="width: 650px; max-width: 100%; height: auto" title="Click to enlarge picture" />
