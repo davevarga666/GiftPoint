@@ -1,7 +1,7 @@
 # GiftPoint
 
-Buy gift coupons from small businesses using live payment. Emails of the purchase are automatically sent out. 
-(This is a mock project for demonstration purposes only.)
+Buy gift coupons from small businesses using live payment. Custom emails of the purchase are automatically sent out. 
+(This is a mock project for demonstration purposes only. This version uses test cards for payment.)
 
 ## Technologies
 
