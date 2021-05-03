@@ -2,8 +2,6 @@ package com.davevarga.giftpoint.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -37,6 +35,7 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
     private var flag = false
     private lateinit var paymentSession: PaymentSession
     private lateinit var selectedPaymentMethod: PaymentMethod
+
     private val stripe: Stripe by lazy {
         Stripe(
             requireContext(),
@@ -44,26 +43,19 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
         )
     }
 
-    private val listen: MutableLiveData<String> =  MutableLiveData()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         flag = true
-        listen.value = binding.paymentmethod.toString()
-        listen.observe(requireActivity(), Observer {
-            binding.payButton.isEnabled = it !="Select payment method"
-            Log.i("LDVALUE", binding.payButton.isEnabled.toString() )
-        })
+        binding.payButton.isEnabled = false
+
         paymentViewModel = ViewModelProviders.of(this, factory).get(PaymentViewModel::class.java)
         orderViewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
-        orderViewModel.showPendingOrder()
+        orderViewModel.fetchPendingOrder()
 
-        orderViewModel.order.observe(viewLifecycleOwner, Observer {
-            binding.order = it
-//            binding.checkoutSummary.text = binding.order!!.orderValue.dropLast(2)
-            binding.checkoutSummary.text = binding.order!!.orderValue
-        })
+        observe()
+
 
         PaymentConfiguration.init(
             requireContext(),
@@ -71,12 +63,24 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
         )
         setupPaymentSession()
 
+        setUpBindings()
+
+    }
+
+    private fun observe() {
+        orderViewModel.order.observe(viewLifecycleOwner, Observer {
+            binding.order = it
+
+            binding.checkoutSummary.text = binding.order!!.orderValue
+        })
+    }
+
+    private fun setUpBindings() {
         binding.payButton.setOnClickListener {
             confirmPayment(selectedPaymentMethod.id!!)
         }
 
         binding.paymentmethod.setOnClickListener {
-            binding.payButton.isEnabled = true
             paymentSession.presentPaymentMethodSelection()
         }
 
@@ -85,13 +89,10 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
                 findNavController().navigateUp()
             }
         })
-
     }
 
 
     private fun confirmPayment(paymentMethodId: String) {
-//        binding.payButton.isEnabled = false
-
         paymentCollection(paymentMethodId)
 
     }
@@ -123,7 +124,7 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
                                 binding.checkoutSummary.text = getString(R.string.thanks)
                                 Toast.makeText(
                                     requireContext(),
-                                    "Payment Succesful!",
+                                    "Payment Successful!",
                                     Toast.LENGTH_LONG
                                 )
                                     .show()
@@ -133,12 +134,10 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
 
                             }
                         } else {
-//                            binding.payButton.isEnabled = false
                         }
                     }
                 }
                 .addOnFailureListener { e ->
-//                    binding.payButton.isEnabled = false
                     Log.i("PaymentInit", "payment failed")
                 }
 
@@ -163,10 +162,9 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
                         data.paymentMethod?.let {
                             binding.paymentmethod.text =
                                 "${it.card?.brand} card ends with ${it.card?.last4}"
+                            binding.payButton.isEnabled = true
                             selectedPaymentMethod = it
                         }
-//                        Toast.makeText(requireContext(), "Ready to charge!", Toast.LENGTH_LONG)
-//                            .show()
                     }
                 }
 
@@ -190,7 +188,6 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
                 .setPaymentMethodTypes(
                     listOf(PaymentMethod.Type.Card)
                 )
-//                .setShouldShowGooglePay(true)
                 .build()
         )
     }

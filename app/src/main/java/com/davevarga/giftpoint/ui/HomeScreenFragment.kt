@@ -35,12 +35,16 @@ class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListene
         sellersViewModel = ViewModelProviders.of(this, factory).get(SellersViewModel::class.java)
         orderViewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
         setUpRecyclerView()
-        orderViewModel.showPendingOrder()
+        orderViewModel.fetchPendingOrder()
+        setUpBindings()
+    }
+
+    private fun setUpBindings() {
         binding.searchButton.setOnClickListener { view: View ->
             findNavController().navigate(R.id.action_homeScreenFragment_to_searchFragment)
         }
 
-        binding.cart.setOnClickListener(object : View.OnClickListener{
+        binding.cart.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 if (orderViewModel.isCartEmpty()) {
                     Toast.makeText(requireContext(), "Cart is empty", Toast.LENGTH_SHORT).show()

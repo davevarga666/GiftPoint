@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.davevarga.giftpoint.models.Order
 import com.davevarga.giftpoint.repositories.Repository
 import com.google.firebase.firestore.ktx.toObject
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,9 +17,9 @@ class OrderViewModel @Inject constructor(private val repository: Repository) : V
 
     private val db = repository.db
     private val orderRef = db.collection("orders")
-    fun getUser() = repository.currentUser
     private val _order = MutableLiveData<Order>()
     val order: LiveData<Order> = _order
+    fun getUser() = repository.currentUser
 
     fun insert(newOrder: Order) {
 
@@ -42,14 +41,16 @@ class OrderViewModel @Inject constructor(private val repository: Repository) : V
     fun isCartEmpty() = order.value == null
 
     fun getCouponRef(): HashMap<String, out Any> {
-        showPendingOrder()
+        fetchPendingOrder()
         val amountToPay = order.value!!.orderValue.replace("$", "").plus("00").toInt()
-        return hashMapOf("amount" to amountToPay,
-            "currency" to "usd")
+        return hashMapOf(
+            "amount" to amountToPay,
+            "currency" to "usd"
+        )
     }
 
 
-    fun showPendingOrder() {
+    fun fetchPendingOrder() {
 
         viewModelScope.launch {
             val docRef = orderRef.document("first")

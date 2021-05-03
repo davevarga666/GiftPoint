@@ -8,7 +8,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -21,7 +20,6 @@ import com.davevarga.giftpoint.models.Order
 import com.davevarga.giftpoint.models.Recipient
 import com.davevarga.giftpoint.models.Sender
 import com.davevarga.giftpoint.viewmodels.OrderViewModel
-import com.davevarga.giftpoint.viewmodels.SellersViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -40,24 +38,30 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        binding.buyNowBtn.setEnabled(false)
         viewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
-        viewModel.showPendingOrder()
+        viewModel.fetchPendingOrder()
         couponValue = Coupon.TEN.couponValue
 
         checkFields()
+        setBindings()
+        Glide.with(view)
+            .load(args.sellerDetails?.productImage)
+            .into(binding.backgroundStill)
 
+
+
+
+    }
+
+    private fun setBindings() {
+
+        binding.buyNowBtn.setEnabled(false)
         binding.senderName.setText(viewModel.getUser()?.displayName)
         binding.senderEmail.setText(viewModel.getUser()?.email)
         binding.recipientName.setText(viewModel.order.value?.recipient?.recipientName ?: "")
         binding.recipientEmail.setText(viewModel.order.value?.recipient?.recipientEmail ?: "")
 
         binding.seller = args.sellerDetails
-
-
-        Glide.with(view)
-            .load(args.sellerDetails?.productImage)
-            .into(binding.backgroundStill)
 
         binding.toolbarBack.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {

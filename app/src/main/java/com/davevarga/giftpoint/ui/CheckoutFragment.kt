@@ -21,33 +21,41 @@ class CheckoutFragment : BaseFragment<CheckoutScreenBinding>() {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
-    lateinit var viewModel: OrderViewModel
+    lateinit var orderViewModel: OrderViewModel
     lateinit var sellersViewModel: SellersViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        viewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
+        bindButtons()
+        orderViewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
         sellersViewModel = ViewModelProviders.of(this, factory).get(SellersViewModel::class.java)
         sellersViewModel.getSellers()
-        viewModel.showPendingOrder()
+        orderViewModel.fetchPendingOrder()
 
-        viewModel.order.observe(viewLifecycleOwner, Observer {
+        observe()
+
+
+    }
+
+    private fun observe() {
+        orderViewModel.order.observe(viewLifecycleOwner, Observer {
             binding.orderAtCheckout = it
             binding.youPay.text = "You pay " + binding.orderAtCheckout!!.orderValue
         })
+    }
 
+    private fun bindButtons() {
         binding.editOrder.setOnClickListener {
-//            viewModel.removeOrder()
-//            findNavController().navigateUp()
-            sellersViewModel.selectedItem = viewModel.order.value!!.seller.sellerName
-            val action = CheckoutFragmentDirections.actionCheckoutFragmentToDetailFragment(sellersViewModel.sortSeller())
+            sellersViewModel.selectedItem = orderViewModel.order.value!!.seller.sellerName
+            val action =
+                CheckoutFragmentDirections.actionCheckoutFragmentToDetailFragment(sellersViewModel.sortSeller())
             findNavController().navigate(action)
         }
 
         binding.removeOrder.setOnClickListener {
-            viewModel.removeOrder()
+            orderViewModel.removeOrder()
             findNavController().navigate(R.id.action_checkoutFragment_to_homeScreenFragment)
         }
 
@@ -56,13 +64,11 @@ class CheckoutFragment : BaseFragment<CheckoutScreenBinding>() {
         }
 
 
-        binding.toolbarBack.setOnClickListener(object : View.OnClickListener{
+        binding.toolbarBack.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 findNavController().navigateUp()
             }
         })
-
-
     }
 
 

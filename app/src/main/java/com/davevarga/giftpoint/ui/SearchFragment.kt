@@ -40,7 +40,12 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>(),
             )
         binding.businessListView.adapter = adapter
 
-        binding.toolbarBack.setOnClickListener(object : View.OnClickListener{
+        setupBindings(adapter)
+
+    }
+
+    private fun setupBindings(adapter: ArrayAdapter<String>) {
+        binding.toolbarBack.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 findNavController().navigateUp()
             }
@@ -78,7 +83,6 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>(),
                     SearchFragmentDirections.actionSearchFragmentToDetailFragment(viewModel.sortSeller())
                 findNavController().navigate(action)
             }
-
     }
 
 
