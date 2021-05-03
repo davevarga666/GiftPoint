@@ -16,17 +16,4 @@ data class Seller(
 
 ) : Parcelable {
 
-//    companion object {
-//        fun DocumentSnapshot.toSeller() : Seller? {
-//            val name = getString("sellerName")!!
-//            val email = getString("sellerEmail")!!
-//            val category  = getString("productCategory")!!
-//            val address = getString("businessAddress")!!
-//            val account= getString("sellerAccNumber")!!
-//            val image = getString("productImage")!!
-//
-//            return Seller(name, email, category, address, account, image)
-//
-//        }
-//    }
 }

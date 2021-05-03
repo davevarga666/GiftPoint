@@ -43,7 +43,7 @@ class OrderViewModel @Inject constructor(private val repository: Repository) : V
 
     fun getCouponRef(): HashMap<String, out Any> {
         showPendingOrder()
-        val amountToPay = order.value!!.orderValue.replace("$", "").toInt()
+        val amountToPay = order.value!!.orderValue.replace("$", "").plus("00").toInt()
         return hashMapOf("amount" to amountToPay,
             "currency" to "usd")
     }

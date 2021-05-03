@@ -39,6 +39,16 @@ class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListene
         binding.searchButton.setOnClickListener { view: View ->
             findNavController().navigate(R.id.action_homeScreenFragment_to_searchFragment)
         }
+
+        binding.cart.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                if (orderViewModel.isCartEmpty()) {
+                    Toast.makeText(requireContext(), "Cart is empty", Toast.LENGTH_SHORT).show()
+                } else {
+                    findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
+                }
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -53,7 +63,6 @@ class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListene
                 } else {
                     findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
                 }
-//                findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
                 true
             }
             else -> super.onOptionsItemSelected(item)

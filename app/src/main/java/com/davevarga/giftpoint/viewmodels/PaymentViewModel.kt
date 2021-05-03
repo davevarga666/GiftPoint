@@ -19,6 +19,8 @@ class PaymentViewModel @Inject constructor(application: Application) :
 
     fun getPaymentCollection(): CollectionReference {
         paymentCollection = db
+//            .collection("payments")
+            .collection("stripe_customers").document(repository.currentUser?.uid?:"")
             .collection("payments")
 
         return paymentCollection

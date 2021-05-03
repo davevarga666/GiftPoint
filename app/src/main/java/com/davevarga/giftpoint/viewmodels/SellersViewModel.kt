@@ -17,7 +17,7 @@ class SellersViewModel @Inject constructor(private val repository: Repository) :
     private val db = repository.db
     private val sellerRef = db.collection("sellers")
     lateinit var selectedItem: String
-    var selectedSeller = MutableLiveData<Seller>()
+    var selectedSeller = Seller()
     private lateinit var options: FirestoreRecyclerOptions<Seller>
 
     val sellerList = mutableListOf<Seller>()

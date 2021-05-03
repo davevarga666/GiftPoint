@@ -25,6 +25,11 @@ android {
         versionName "1.0"
 
         buildConfigField "String", "STRIPE_API_KEY", "\"pk_test_51ICrzAJUetAhy2B1Jxm7Ei1SoajWB74Qse329eJVcdm1moexF9ftaqbNhFdIQARBuAvxwlm222KQppTZ9z0r0Cob006Dzl98vK\""
+//
+//        "STRIPE_API_KEY", "\"pk_test_51ICrzAJUetAhy2B1Jxm7Ei1SoajWB74Qse329eJVcdm1moexF9ftaqbNhFdIQARBuAvxwlm222KQppTZ9z0r0Cob006Dzl98vK\""
+//        pk_live_51ICrzAJUetAhy2B1EYw3RJLhbbJhRvu6u7YyWp9VZT9BVpVj39Mj18bHvexEIb079FM4QjCjoRjjVcUPcalS2Ez900B4Zn8lUD
+//        "STRIPE_API_KEY", "\"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\""
+//        sk_test_51ICrzAJUetAhy2B1js88Xd4dqwvHUu4Q1CJydsBFxbsalja6SZavgj1Fzblyeu74zEC2r2WHneNtv9piPzgNnb8u007lGQM1Om
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -83,8 +88,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation "android.arch.lifecycle:extensions:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
 
     implementation 'com.google.android.material:material:1.3.0'
     implementation "androidx.recyclerview:recyclerview:1.1.0"
@@ -93,25 +98,25 @@ dependencies {
 
     //Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2'
 
     //Navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:2.3.3"
-    implementation "androidx.navigation:navigation-ui-ktx:2.3.3"
-    implementation 'androidx.fragment:fragment-ktx:1.3.0-rc02'
-    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.3.3"
-    implementation "androidx.navigation:navigation-compose:1.0.0-alpha06"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.4"
+    implementation "androidx.navigation:navigation-ui-ktx:2.3.4"
+    implementation 'androidx.fragment:fragment-ktx:1.3.2'
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.3.4"
+    implementation "androidx.navigation:navigation-compose:1.0.0-alpha09"
 
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:26.4.0')
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation "com.google.firebase:firebase-core:18.0.2"
-    implementation "com.google.firebase:firebase-auth:20.0.2"
+    implementation "com.google.firebase:firebase-auth:20.0.3"
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
-    implementation "com.google.firebase:firebase-database:19.6.0"
-    implementation 'com.google.firebase:firebase-firestore:22.1.1'
+    implementation "com.google.firebase:firebase-database:19.7.0"
+    implementation 'com.google.firebase:firebase-firestore:22.1.2'
     implementation 'com.firebaseui:firebase-ui-firestore:6.3.0'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.1"
     implementation 'com.firebaseui:firebase-ui-storage:4.3.2'
@@ -135,7 +140,8 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
-    //Mockito
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+    //for responsive UI
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    implementation 'com.intuit.ssp:ssp-android:1.0.6'
 
 }

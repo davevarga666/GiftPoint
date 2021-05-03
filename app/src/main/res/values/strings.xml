@@ -10,14 +10,14 @@
     <string name="background_image">background_image</string>
     <string name="please_review_your_order">Please review your order</string>
     <string name="payment_successful">Payment Successful!</string>
-    <string name="price_range">€10-€50</string>
+    <string name="price_range">$10-$50</string>
     <string name="cancel">cancel</string>
     <string name="add_to_cart">add to cart</string>
     <string name="buy_now">buy now</string>
-    <string name="_100">€100</string>
-    <string name="_50">€50</string>
-    <string name="_20">€20</string>
-    <string name="_10">€10</string>
+    <string name="_100">$100</string>
+    <string name="_50">$50</string>
+    <string name="_20">$20</string>
+    <string name="_10">$10</string>
     <string name="enter_sender_email">Enter sender email</string>
     <string name="enter_sender_name">Enter sender name</string>
     <string name="from">From:</string>
@@ -38,8 +38,13 @@
     <string name="ten">$10</string>
     <string name="sign_in">sign in</string>
     <string name="thanks">Thank you for your payment</string>
-    <string name="select_payment_method">select payment method</string>
+    <string name="select_payment_method">Select payment method</string>
     <string name="click_to_pay">Click to Pay</string>
     <string name="hellooo">Hello</string>
     <string name="please_pay_88">Please pay $88</string>
+    <string name="giftpoint">GiftPoint</string>
+    <string name="carte">cart</string>
+    <string name="carttext">Cart</string>
+    <string name="search_coupon">Search Coupon</string>
+    <string name="buy">Buy Now</string>
 </resources>

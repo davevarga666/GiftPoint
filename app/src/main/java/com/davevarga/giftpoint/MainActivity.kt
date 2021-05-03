@@ -1,12 +1,7 @@
 package com.davevarga.giftpoint
 
-import android.app.Application
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.davevarga.giftpoint.ui.HomeScreenFragment
-import com.davevarga.giftpoint.ui.SignInFragment
-import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,6 +1,9 @@
 package com.davevarga.giftpoint.ui
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -27,6 +30,7 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>(),
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this, factory).get(SellersViewModel::class.java)
         viewModel.getSellers()
+        setHasOptionsMenu(true)
 
         val adapter =
             ArrayAdapter(
@@ -36,6 +40,11 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>(),
             )
         binding.businessListView.adapter = adapter
 
+        binding.toolbarBack.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                findNavController().navigateUp()
+            }
+        })
 
         binding.cancel.setOnClickListener()
         {

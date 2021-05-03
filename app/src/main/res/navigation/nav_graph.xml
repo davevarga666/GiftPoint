@@ -92,6 +92,10 @@
         android:label="PaymentInitFragment" >
         <action
             android:id="@+id/action_paymentInitFragment_to_homeScreenFragment"
-            app:destination="@id/homeScreenFragment" />
+            app:destination="@id/homeScreenFragment"
+            app:popUpTo="@id/homeScreenFragment" />
+        <action
+            android:id="@+id/action_paymentInitFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
     </fragment>
 </navigation>

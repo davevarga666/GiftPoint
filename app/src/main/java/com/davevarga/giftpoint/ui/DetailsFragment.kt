@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -20,6 +21,7 @@ import com.davevarga.giftpoint.models.Order
 import com.davevarga.giftpoint.models.Recipient
 import com.davevarga.giftpoint.models.Sender
 import com.davevarga.giftpoint.viewmodels.OrderViewModel
+import com.davevarga.giftpoint.viewmodels.SellersViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -31,8 +33,6 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
     @Inject
     lateinit var factory: ViewModelProvider.Factory
     lateinit var viewModel: OrderViewModel
-
-
     private val args: DetailFragmentArgs by navArgs()
     private var namesEmpty: Boolean = true
 
@@ -40,24 +40,39 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
+        binding.buyNowBtn.setEnabled(false)
         viewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
+        viewModel.showPendingOrder()
         couponValue = Coupon.TEN.couponValue
 
         checkFields()
 
         binding.senderName.setText(viewModel.getUser()?.displayName)
         binding.senderEmail.setText(viewModel.getUser()?.email)
-
+        binding.recipientName.setText(viewModel.order.value?.recipient?.recipientName ?: "")
+        binding.recipientEmail.setText(viewModel.order.value?.recipient?.recipientEmail ?: "")
 
         binding.seller = args.sellerDetails
 
+
         Glide.with(view)
-            .load(args.sellerDetails!!.productImage)
+            .load(args.sellerDetails?.productImage)
             .into(binding.backgroundStill)
 
+        binding.toolbarBack.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                findNavController().navigateUp()
+            }
+        })
 
+
+        binding.recipientName.addTextChangedListener(createTextWatcher())
+        binding.recipientEmail.addTextChangedListener(createTextWatcher())
+        binding.senderName.addTextChangedListener(createTextWatcher())
+        binding.senderEmail.addTextChangedListener(createTextWatcher())
 
         binding.buyNowBtn.setOnClickListener {
+            checkFields()
             viewModel.insert(addOrder())
 
             val action = DetailFragmentDirections.actionDetailFragmentToCheckoutFragment(addOrder())
@@ -76,11 +91,6 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
             }
         }
 
-
-        binding.recipientName.addTextChangedListener(createTextWatcher())
-        binding.recipientEmail.addTextChangedListener(createTextWatcher())
-        binding.senderName.addTextChangedListener(createTextWatcher())
-        binding.senderEmail.addTextChangedListener(createTextWatcher())
 
     }
 
@@ -107,18 +117,6 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
         }
     }
 
-
-    //should use livedata
-//        val button: MaterialButton = binding.toggleGroup.findViewById(buttonId)
-//        return when (button) {
-//            binding.btn10 -> Coupon.TEN.couponValue
-//            binding.btn20 -> Coupon.TWENTY.couponValue
-//            binding.btn50 -> Coupon.FIFTY.couponValue
-//            binding.btn100 -> Coupon.HUNDRED.couponValue
-//            else -> Coupon.ZERO.couponValue
-//        }
-
-
     fun addOrder(): Order {
         val seller = binding.seller
         val sender = Sender(binding.senderName.text.toString(), binding.senderEmail.text.toString())
@@ -126,7 +124,6 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
             binding.recipientName.text.toString(),
             binding.recipientEmail.text.toString()
         )
-//        return Order("$10",  recipient, seller!!, sender)
         return Order(couponValue, recipient, seller!!, sender)
     }
 
@@ -153,6 +150,4 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
     }
 
     override fun getFragmentView() = R.layout.details_screen
-//
-//    override fun getViewModel() = SenderViewModel::class.java
 }

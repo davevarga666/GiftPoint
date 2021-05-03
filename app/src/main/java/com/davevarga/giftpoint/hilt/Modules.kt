@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.davevarga.giftpoint.BaseApplication
 import com.davevarga.giftpoint.factory.DaggerViewModelFactory
-import com.davevarga.giftpoint.factory.TempSignInFactory
-import com.davevarga.giftpoint.factory.TempPaymentFactory
+import com.davevarga.giftpoint.factory.PaymentFactory
+import com.davevarga.giftpoint.factory.SignInFactory
 import com.davevarga.giftpoint.viewmodels.*
 import dagger.Binds
 import dagger.MapKey
@@ -37,7 +37,7 @@ object AppModule {
 internal abstract class TempBindModule {
     @Binds
     @Named("TempFactory")
-    abstract fun bindTempViewModelFactory(factory: TempSignInFactory): ViewModelProvider.Factory
+    abstract fun bindTempViewModelFactory(factory: SignInFactory): ViewModelProvider.Factory
 
     @Binds
     @IntoMap
@@ -51,7 +51,7 @@ internal abstract class TempBindModule {
 internal abstract class TempPaymentBindModule {
     @Binds
     @Named("TempPMFactory")
-    abstract fun bindTempPMViewModelFactory(factory: TempPaymentFactory): ViewModelProvider.Factory
+    abstract fun bindTempPMViewModelFactory(factory: PaymentFactory): ViewModelProvider.Factory
 
     @Binds
     @IntoMap
@@ -60,18 +60,11 @@ internal abstract class TempPaymentBindModule {
 }
 
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 internal abstract class MultiBindModule {
     @Binds
     abstract fun bindViewModelFactory(factory: DaggerViewModelFactory): ViewModelProvider.Factory
-
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(SignInViewModel::class)
-//    abstract fun bindSignInViewModel(viewModel: SignInViewModel): ViewModel
-
 
 
     @Binds
@@ -89,10 +82,6 @@ internal abstract class MultiBindModule {
     @ViewModelKey(OrderViewModel::class)
     abstract fun bindOrderViewModel(viewModel: OrderViewModel): ViewModel
 
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(PaymentViewModel::class)
-//    abstract fun bindPaymentViewModel(viewModel: PaymentViewModel): ViewModel
 }
 
 @MustBeDocumented
