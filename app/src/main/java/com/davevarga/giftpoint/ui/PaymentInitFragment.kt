@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -47,7 +48,8 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
         super.onViewCreated(view, savedInstanceState)
 
         flag = true
-        binding.payButton.isEnabled = false
+        binding.payButton.isVisible = false
+        binding.payButton.isEnabled = true
 
         paymentViewModel = ViewModelProviders.of(this, factory).get(PaymentViewModel::class.java)
         orderViewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
@@ -97,6 +99,7 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
     }
 
     private fun paymentCollection(paymentMethodId: String) {
+        flag = true
         if (flag)
             paymentViewModel.getPaymentCollection().add(
                 orderViewModel.getCouponRef()
@@ -161,7 +164,7 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
                         data.paymentMethod?.let {
                             binding.paymentmethod.text =
                                 "${it.card?.brand} card ends with ${it.card?.last4}"
-                            binding.payButton.isEnabled = true
+                            binding.payButton.isVisible = true
                             selectedPaymentMethod = it
                         }
                     }

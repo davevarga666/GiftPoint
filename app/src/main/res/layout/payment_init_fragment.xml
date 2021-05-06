@@ -159,6 +159,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="@font/p_semibold"
                 android:gravity="center"
+                android:enabled="true"
                 android:text="@string/click_to_pay"
                 android:textColor="#ffffff"
                 android:textSize="@dimen/_11sdp" />
