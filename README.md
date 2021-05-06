@@ -5,7 +5,7 @@ Buy gift coupons from small businesses using live payment. Custom emails of the 
 
 ## Technologies
 
-MVVM, Firebase, Hilt
+Kotlin, MVVM, Firebase, Hilt, Stripe for payment processing.
 
 
 ## Usage
