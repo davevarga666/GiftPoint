@@ -3,6 +3,8 @@
 Buy gift coupons from small businesses using live payment. Custom emails of the purchase are automatically sent out. 
 (This is a mock project for demonstration purposes only. This version uses test cards for payment.)
 
+TO BE ABLE TO RUN THE APP, PLEASE REACH OUT TO ME FOR THE STRIPE KEY AT davevarga999@gmail.com.
+
 ## Technologies
 
 Kotlin, MVVM, Firebase, Hilt, Stripe for payment processing.
