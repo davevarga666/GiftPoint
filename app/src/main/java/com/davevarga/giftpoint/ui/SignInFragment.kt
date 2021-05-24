@@ -33,6 +33,13 @@ class SignInFragment : BaseFragment<SignInScreenBinding>() {
         viewModel = ViewModelProviders.of(this, SignInFactory(requireActivity().application))
             .get(SignInViewModel::class.java)
 
+        binding.signInBtn.setOnClickListener {
+            signIn()
+        }
+
+        googleSignInClient =
+            GoogleSignIn.getClient(requireActivity(), viewModel.getMyGso(requireContext()))
+
         proceed()
     }
 
@@ -41,15 +48,7 @@ class SignInFragment : BaseFragment<SignInScreenBinding>() {
             findNavController().navigate(R.id.action_signInFragment_to_homeScreenFragment)
         }
 
-        googleSignInClient =
-            GoogleSignIn.getClient(requireActivity(), viewModel.getMyGso(requireContext()))
-
-
-        binding.signInBtn.setOnClickListener {
-            signIn()
-        }
     }
-
 
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent

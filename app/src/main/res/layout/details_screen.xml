@@ -42,7 +42,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="1">
+                android:weightSum="1"
+                tools:ignore="UseCompoundDrawables,UselessParent">
 
                 <ImageView
                     android:id="@+id/toolbar_back"
@@ -52,19 +53,21 @@
                     android:padding="@dimen/_10sdp"
                     android:rotation="90"
                     android:src="@drawable/ic_arrow"
-                    app:tint="#222222" />
+                    app:tint="#222222"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_1sdp"
                     android:layout_weight="1"
                     android:fontFamily="@font/p_semibold"
-                    android:text="Details"
+                    android:text="@string/details"
                     android:textColor="#333333"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_12sdp"
+                    tools:ignore="SpUsage" />
 
             </LinearLayout>
         </LinearLayout>
@@ -78,7 +81,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
 
@@ -95,7 +98,8 @@
                     app:layout_constraintBottom_toTopOf="@id/toggleGroup"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="UnusedAttribute">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -130,7 +134,8 @@
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/_12sdp"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:text="Smoothie Bar" />
+                            tools:text="Smoothie Bar"
+                            tools:ignore="SpUsage" />
 
                         <LinearLayout
                             android:id="@+id/information"
@@ -151,26 +156,29 @@
 
                                 android:orientation="horizontal"
                                 app:layout_constraintBottom_toTopOf="@+id/business_address"
-                                app:layout_constraintStart_toStartOf="parent">
+                                app:layout_constraintStart_toStartOf="parent"
+                                tools:ignore="UseCompoundDrawables">
 
                                 <ImageView
                                     android:layout_width="@dimen/_10sdp"
                                     android:layout_height="@dimen/_10sdp"
-                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:layout_marginStart="@dimen/_5sdp"
                                     android:src="@drawable/ic_category"
-                                    app:tint="#ffffff" />
+                                    app:tint="#ffffff"
+                                    tools:ignore="ContentDescription" />
 
                                 <TextView
                                     android:id="@+id/business_category_detail"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:layout_marginStart="@dimen/_5sdp"
                                     android:layout_weight="1"
                                     android:fontFamily="@font/p_semibold"
                                     android:text="@{seller.productCategory}"
                                     android:textColor="@android:color/white"
                                     android:textSize="@dimen/_10sdp"
-                                    tools:text="@tools:sample/date/hhmmss" />
+                                    tools:text="@tools:sample/date/hhmmss"
+                                    tools:ignore="SpUsage" />
 
                             </LinearLayout>
 
@@ -183,26 +191,29 @@
                                 android:gravity="center"
                                 android:orientation="horizontal"
                                 app:layout_constraintBottom_toTopOf="@id/coupon_value_range"
-                                app:layout_constraintStart_toStartOf="parent">
+                                app:layout_constraintStart_toStartOf="parent"
+                                tools:ignore="UseCompoundDrawables">
 
                                 <ImageView
                                     android:layout_width="@dimen/_10sdp"
                                     android:layout_height="@dimen/_10sdp"
-                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:layout_marginStart="@dimen/_5sdp"
                                     android:src="@drawable/ic_location"
-                                    app:tint="#ffffff" />
+                                    app:tint="#ffffff"
+                                    tools:ignore="ContentDescription" />
 
                                 <TextView
                                     android:id="@+id/business_address_detail"
-                                    android:layout_width="match_parent"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:layout_marginStart="@dimen/_5sdp"
                                     android:layout_weight="1"
                                     android:fontFamily="@font/p_semibold"
                                     android:text="@{seller.businessAddress}"
                                     android:textColor="@android:color/white"
                                     android:textSize="@dimen/_10sdp"
-                                    tools:text="Broadway,NY" />
+                                    tools:text="Broadway,NY"
+                                    tools:ignore="SpUsage" />
 
                             </LinearLayout>
 
@@ -292,7 +303,8 @@
                         android:textSize="@dimen/_12sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:ignore="SpUsage" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/enterRecipientName"
@@ -301,7 +313,8 @@
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="parent">
+                        app:layout_constraintTop_toBottomOf="parent"
+                        tools:ignore="SpUsage">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/recipientName"
@@ -323,7 +336,8 @@
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="parent">
+                        app:layout_constraintTop_toBottomOf="parent"
+                        tools:ignore="SpUsage">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/recipientEmail"
@@ -348,7 +362,8 @@
                         android:textSize="@dimen/_12sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:ignore="SpUsage" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/enterSenderName"
@@ -357,7 +372,8 @@
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="parent">
+                        app:layout_constraintTop_toBottomOf="parent"
+                        tools:ignore="SpUsage">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/senderName"
@@ -380,7 +396,8 @@
                         android:textSize="@dimen/_10sdp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="parent">
+                        app:layout_constraintTop_toBottomOf="parent"
+                        tools:ignore="SpUsage">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/senderEmail"
@@ -430,7 +447,8 @@
                 android:gravity="center"
                 android:text="@string/buy"
                 android:textColor="#ffffff"
-                android:textSize="@dimen/_11sdp" />
+                android:textSize="@dimen/_11sdp"
+                tools:ignore="SpUsage" />
         </LinearLayout>
 
     </RelativeLayout>

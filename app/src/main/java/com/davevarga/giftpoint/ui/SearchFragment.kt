@@ -28,9 +28,9 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         viewModel = ViewModelProviders.of(this, factory).get(SellersViewModel::class.java)
         viewModel.getSellers()
-        setHasOptionsMenu(true)
 
         val adapter =
             ArrayAdapter(

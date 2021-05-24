@@ -19,7 +19,7 @@ class OrderViewModel @Inject constructor(private val repository: Repository) : V
     private val orderRef = db.collection("orders")
     private val _order = MutableLiveData<Order>()
     val order: LiveData<Order> = _order
-    fun getUser() = repository.currentUser
+    val user = repository.currentUser
 
     fun insert(newOrder: Order) {
 
@@ -38,6 +38,39 @@ class OrderViewModel @Inject constructor(private val repository: Repository) : V
 
     }
 
+
+    fun fetchPendingOrder() {
+        val docRef = orderRef.document("first")
+        docRef.get()
+            .addOnSuccessListener { documentSnaphot ->
+                _order.value = documentSnaphot.toObject<Order>()
+
+
+            }
+
+
+    }
+
+    fun removeOrder() {
+        viewModelScope.launch {
+            db.collection("orders").document("first")
+                .delete()
+                .addOnSuccessListener {
+                    Log.d(
+                        ContentValues.TAG,
+                        "DocumentSnapshot successfully deleted!"
+                    )
+                }
+                .addOnFailureListener { e ->
+                    Log.w(
+                        ContentValues.TAG,
+                        "Error deleting document",
+                        e
+                    )
+                }
+        }
+    }
+
     fun isCartEmpty() = order.value == null
 
     fun getCouponRef(): HashMap<String, out Any> {
@@ -47,34 +80,6 @@ class OrderViewModel @Inject constructor(private val repository: Repository) : V
             "amount" to amountToPay,
             "currency" to "usd"
         )
-    }
-
-
-    fun fetchPendingOrder() {
-
-        viewModelScope.launch {
-            val docRef = orderRef.document("first")
-            docRef.get()
-                .addOnSuccessListener { documentSnaphot ->
-                    _order.value = documentSnaphot.toObject<Order>()
-
-
-                }
-        }
-
-
-    }
-
-    fun removeOrder() {
-        db.collection("orders").document("first")
-            .delete()
-            .addOnSuccessListener {
-                Log.d(
-                    ContentValues.TAG,
-                    "DocumentSnapshot successfully deleted!"
-                )
-            }
-            .addOnFailureListener { e -> Log.w(ContentValues.TAG, "Error deleting document", e) }
     }
 
 

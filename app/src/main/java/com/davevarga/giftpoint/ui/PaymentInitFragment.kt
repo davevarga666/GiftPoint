@@ -71,7 +71,6 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
     private fun observe() {
         orderViewModel.order.observe(viewLifecycleOwner, Observer {
             binding.order = it
-
             binding.checkoutSummary.text = binding.order!!.orderValue
         })
     }
@@ -135,7 +134,6 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
 
 
                             }
-                        } else {
                         }
                     }
                 }

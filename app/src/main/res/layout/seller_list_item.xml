@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginRight="@dimen/_5sdp">
+    android:layout_marginEnd="@dimen/_5sdp">
 
     <data>
 
@@ -53,7 +53,8 @@
                     android:textColor="@android:color/white"
                     app:layout_constraintTop_toTopOf="parent"
                     android:textSize="@dimen/_12sdp"
-                    tools:text="Smoothie Bar" />
+                    tools:text="Smoothie Bar"
+                    tools:ignore="SpUsage" />
 
                 <LinearLayout
                     android:id="@+id/information"
@@ -74,26 +75,29 @@
 
                         android:layout_marginTop="@dimen/_5sdp"
                         app:layout_constraintBottom_toTopOf="@+id/business_address"
-                        app:layout_constraintStart_toStartOf="parent">
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:ignore="UseCompoundDrawables">
 
                         <ImageView
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="@dimen/_10sdp"
                             android:src="@drawable/ic_category"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            app:tint="#ffffff" />
+                            android:layout_marginStart="@dimen/_5sdp"
+                            app:tint="#ffffff"
+                            tools:ignore="ContentDescription" />
 
                         <TextView
                             android:id="@+id/category"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
                             android:layout_weight="1"
                             android:fontFamily="@font/p_semibold"
                             android:text="@{seller.productCategory}"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/_10sdp"
-                            tools:text="@tools:sample/date/hhmmss" />
+                            tools:text="@tools:sample/date/hhmmss"
+                            tools:ignore="SpUsage" />
 
                     </LinearLayout>
 
@@ -105,26 +109,29 @@
                         android:layout_marginTop="@dimen/_2sdp"
                         android:orientation="horizontal"
                         app:layout_constraintBottom_toTopOf="@id/coupon_value_range"
-                        app:layout_constraintStart_toStartOf="parent">
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:ignore="UseCompoundDrawables">
 
                         <ImageView
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="@dimen/_10sdp"
                             android:src="@drawable/ic_location"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            app:tint="#ffffff" />
+                            android:layout_marginStart="@dimen/_5sdp"
+                            app:tint="#ffffff"
+                            tools:ignore="ContentDescription" />
 
                         <TextView
                             android:id="@+id/business_address"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
                             android:layout_weight="1"
                             android:fontFamily="@font/p_semibold"
                             android:text="@{seller.businessAddress}"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/_10sdp"
-                            tools:text="Broadway,NY" />
+                            tools:text="Broadway,NY"
+                            tools:ignore="SpUsage" />
 
                     </LinearLayout>
 
@@ -137,26 +144,29 @@
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent">
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:ignore="UseCompoundDrawables">
 
                         <ImageView
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="@dimen/_10sdp"
                             android:src="@drawable/ic_euro"
-                            android:layout_marginLeft="@dimen/_5sdp"
-                            app:tint="#ffffff" />
+                            android:layout_marginStart="@dimen/_5sdp"
+                            app:tint="#ffffff"
+                            tools:ignore="ContentDescription" />
 
                         <TextView
                             android:id="@+id/coupon_value_range"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
                             android:layout_weight="1"
                             android:fontFamily="@font/p_semibold"
                             android:text="@string/price_range"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/_10sdp"
-                            tools:text="$10-$50"  />
+                            tools:text="$10-$50"
+                            tools:ignore="SpUsage" />
 
                     </LinearLayout>
                 </LinearLayout>

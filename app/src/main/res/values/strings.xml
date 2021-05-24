@@ -31,7 +31,7 @@
     <string name="seller">Seller:</string>
     <string name="checkout_to">To:</string>
     <string name="checkout_fromfrom">From:</string>
-    <string name="edit_order">Edit order</string>
+    <string name="edit_my_order">Edit order</string>
     <string name="hundred">$100</string>
     <string name="fifty">$50</string>
     <string name="twenty">$20</string>
@@ -47,4 +47,21 @@
     <string name="carttext">Cart</string>
     <string name="search_coupon">Search Coupon</string>
     <string name="buy">Buy Now</string>
+    <string name="toolbar_back">toolbar_back</string>
+    <string name="checkout_sign">Checkout</string>
+    <string name="checkout_press">Checkout</string>
+    <string name="remove_this_order">Remove order</string>
+    <string name="editimage">editImage</string>
+    <string name="edit_order">Edit order</string>
+    <string name="remove_my_order">removeOrder</string>
+    <string name="details">Details</string>
+    <string name="_10_coupons">10 Coupons</string>
+    <string name="swipe_to_view_more">Swipe to view more</string>
+    <string name="swipe_for_more">swipe for more</string>
+    <string name="searchsign">searchSign</string>
+    <string name="searchButton">Search</string>
+    <string name="backarrow">backArrow</string>
+    <string name="payment">Payment</string>
+    <string name="please_pay">Please pay</string>
+    <string name="cancel_button">Cancel</string>
 </resources>

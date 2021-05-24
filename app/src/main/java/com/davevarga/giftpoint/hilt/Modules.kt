@@ -74,11 +74,6 @@ internal abstract class MultiBindModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SenderViewModel::class)
-    abstract fun bindSenderViewModel(viewModel: SenderViewModel): ViewModel
-
-    @Binds
-    @IntoMap
     @ViewModelKey(OrderViewModel::class)
     abstract fun bindOrderViewModel(viewModel: OrderViewModel): ViewModel
 

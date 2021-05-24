@@ -26,11 +26,11 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class DetailFragment : BaseFragment<DetailsScreenBinding>() {
 
-    lateinit var couponValue: String
-
     @Inject
     lateinit var factory: ViewModelProvider.Factory
     lateinit var viewModel: OrderViewModel
+
+    lateinit var couponValue: String
     private val args: DetailFragmentArgs by navArgs()
     private var namesEmpty: Boolean = true
 
@@ -49,21 +49,19 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
             .into(binding.backgroundStill)
 
 
-
-
     }
 
     private fun setBindings() {
 
         binding.buyNowBtn.setEnabled(false)
-        binding.senderName.setText(viewModel.getUser()?.displayName)
-        binding.senderEmail.setText(viewModel.getUser()?.email)
+        binding.senderName.setText(viewModel.user?.displayName)
+        binding.senderEmail.setText(viewModel.user?.email)
         binding.recipientName.setText(viewModel.order.value?.recipient?.recipientName ?: "")
         binding.recipientEmail.setText(viewModel.order.value?.recipient?.recipientEmail ?: "")
 
         binding.seller = args.sellerDetails
 
-        binding.toolbarBack.setOnClickListener(object : View.OnClickListener{
+        binding.toolbarBack.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 findNavController().navigateUp()
             }
