@@ -1,14 +1,13 @@
 package com.davevarga.giftpoint.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.davevarga.giftpoint.BuildConfig.STRIPE_API_KEY
 import com.davevarga.giftpoint.R
@@ -20,17 +19,11 @@ import com.stripe.android.*
 import com.stripe.android.model.ConfirmPaymentIntentParams
 import com.stripe.android.model.PaymentMethod
 import com.stripe.android.view.BillingAddressFields
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
 
-
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-    lateinit var paymentViewModel: PaymentViewModel
-    lateinit var orderViewModel: OrderViewModel
+    private lateinit var paymentViewModel: PaymentViewModel
+    private lateinit var orderViewModel: OrderViewModel
 
     private var flag = false
     private lateinit var paymentSession: PaymentSession
@@ -51,25 +44,22 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
         binding.payButton.isVisible = false
         binding.payButton.isEnabled = true
 
-        paymentViewModel = ViewModelProviders.of(this, factory).get(PaymentViewModel::class.java)
-        orderViewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
+        paymentViewModel = ViewModelProvider(requireActivity())[PaymentViewModel::class.java]
+        orderViewModel = ViewModelProvider(requireActivity())[OrderViewModel::class.java]
         orderViewModel.fetchPendingOrder()
-
         observe()
-
 
         PaymentConfiguration.init(
             requireContext(),
             STRIPE_API_KEY
         )
-        setupPaymentSession()
-
+        setUpPaymentSession()
         setUpBindings()
 
     }
 
     private fun observe() {
-        orderViewModel.order.observe(viewLifecycleOwner, Observer {
+        orderViewModel.order.observe(viewLifecycleOwner, {
             binding.order = it
             binding.checkoutSummary.text = binding.order!!.orderValue
         })
@@ -80,24 +70,22 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
             confirmPayment(selectedPaymentMethod.id!!)
         }
 
-        binding.paymentmethod.setOnClickListener {
+        binding.paymentMethod.setOnClickListener {
             paymentSession.presentPaymentMethodSelection()
         }
 
-        binding.toolbarBack.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                findNavController().navigateUp()
-            }
-        })
+        binding.toolbarBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
 
     private fun confirmPayment(paymentMethodId: String) {
-        paymentCollection(paymentMethodId)
+        initPaymentCollection(paymentMethodId)
 
     }
 
-    private fun paymentCollection(paymentMethodId: String) {
+    private fun initPaymentCollection(paymentMethodId: String) {
         flag = true
         if (flag)
             paymentViewModel.getPaymentCollection().add(
@@ -144,9 +132,9 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
     }
 
 
-    private fun setupPaymentSession() {
+    private fun setUpPaymentSession() {
         CustomerSession.initCustomerSession(requireContext(), FirebaseEphemeralKeyProvider())
-        paymentSessionDetails()
+        setPaymentSessionDetails()
         Log.i("PaymentInit", "payment set up")
         initPaymentSession()
 
@@ -155,12 +143,13 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
     private fun initPaymentSession() {
         paymentSession.init(
             object : PaymentSession.PaymentSessionListener {
+                @SuppressLint("SetTextI18n")
                 override fun onPaymentSessionDataChanged(data: PaymentSessionData) {
 
                     if (data.isPaymentReadyToCharge) {
 
                         data.paymentMethod?.let {
-                            binding.paymentmethod.text =
+                            binding.paymentMethod.text =
                                 "${it.card?.brand} card ends with ${it.card?.last4}"
                             binding.payButton.isVisible = true
                             selectedPaymentMethod = it
@@ -179,7 +168,7 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
         )
     }
 
-    private fun paymentSessionDetails() {
+    private fun setPaymentSessionDetails() {
         paymentSession = PaymentSession(
             this, PaymentSessionConfig.Builder()
                 .setShippingInfoRequired(false)

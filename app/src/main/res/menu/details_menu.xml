@@ -7,6 +7,6 @@
         android:id="@+id/action_up"
         android:icon="@drawable/ic_up"
         android:title="@string/up"
-        app:showAsAction="ifRoom|withText"/>
+        app:showAsAction="always"/>
 
 </menu>

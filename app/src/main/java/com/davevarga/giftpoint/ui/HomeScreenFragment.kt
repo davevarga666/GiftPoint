@@ -18,11 +18,8 @@ import com.davevarga.giftpoint.viewmodels.SellersViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@AndroidEntryPoint
 class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListener {
 
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
     lateinit var sellersViewModel: SellersViewModel
     lateinit var orderViewModel: OrderViewModel
 
@@ -32,11 +29,12 @@ class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListene
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        sellersViewModel = ViewModelProviders.of(this, factory).get(SellersViewModel::class.java)
-        orderViewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
+        orderViewModel = ViewModelProvider(requireActivity()).get(OrderViewModel::class.java)
+        sellersViewModel = ViewModelProvider(requireActivity()).get(SellersViewModel::class.java)
         setUpRecyclerView()
-        orderViewModel.fetchPendingOrder()
         setUpBindings()
+        orderViewModel.fetchPendingOrder()
+
     }
 
     private fun setUpBindings() {
@@ -44,34 +42,41 @@ class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListene
             findNavController().navigate(R.id.action_homeScreenFragment_to_searchFragment)
         }
 
-        binding.cart.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
+        binding.cart.setOnClickListener {
                 if (orderViewModel.isCartEmpty()) {
                     Toast.makeText(requireContext(), "Cart is empty", Toast.LENGTH_SHORT).show()
                 } else {
                     findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
                 }
             }
-        })
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.home_menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_cart -> {
+        binding.cart.setOnClickListener{
                 if (orderViewModel.isCartEmpty()) {
                     Toast.makeText(requireContext(), "Cart is empty", Toast.LENGTH_SHORT).show()
                 } else {
                     findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
                 }
-                true
             }
-            else -> super.onOptionsItemSelected(item)
-        }
+
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        inflater.inflate(R.menu.home_menu, menu)
+//    }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.itemId) {
+//            R.id.action_cart -> {
+//                if (orderViewModel.isCartEmpty()) {
+//                    Toast.makeText(requireContext(), "Cart is empty", Toast.LENGTH_SHORT).show()
+//                } else {
+//                    findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
+//                }
+//                true
+//            }
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
 
     fun setUpRecyclerView() {
 

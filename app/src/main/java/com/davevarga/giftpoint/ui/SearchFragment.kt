@@ -1,37 +1,32 @@
 package com.davevarga.giftpoint.ui
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.SearchFragmentBinding
 import com.davevarga.giftpoint.models.Seller
 import com.davevarga.giftpoint.viewmodels.SellersViewModel
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class SearchFragment : BaseFragment<SearchFragmentBinding>(),
     SellerClickListener {
 
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
     lateinit var viewModel: SellersViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-        viewModel = ViewModelProviders.of(this, factory).get(SellersViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(SellersViewModel::class.java)
         viewModel.getSellers()
+        setupBindings(setUpAdapter())
 
+    }
+
+    private fun setUpAdapter(): ArrayAdapter<String> {
         val adapter =
             ArrayAdapter(
                 requireContext(),
@@ -39,17 +34,13 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>(),
                 viewModel.sellerNameList
             )
         binding.businessListView.adapter = adapter
-
-        setupBindings(adapter)
-
+        return adapter
     }
 
     private fun setupBindings(adapter: ArrayAdapter<String>) {
-        binding.toolbarBack.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                findNavController().navigateUp()
-            }
-        })
+        binding.toolbarBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
         binding.cancel.setOnClickListener()
         {
@@ -86,8 +77,7 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>(),
     }
 
 
-    override fun onItemClick(item: Seller, position: Int) {
-    }
+    override fun onItemClick(item: Seller, position: Int) {}
 
     override fun getFragmentView() = R.layout.search_fragment
 

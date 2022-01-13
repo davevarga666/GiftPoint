@@ -16,11 +16,8 @@ import com.davevarga.giftpoint.viewmodels.SellersViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@AndroidEntryPoint
 class CheckoutFragment : BaseFragment<CheckoutScreenBinding>() {
 
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
     lateinit var orderViewModel: OrderViewModel
     lateinit var sellersViewModel: SellersViewModel
 
@@ -29,11 +26,10 @@ class CheckoutFragment : BaseFragment<CheckoutScreenBinding>() {
         setHasOptionsMenu(true)
 
         bindButtons()
-        orderViewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
-        sellersViewModel = ViewModelProviders.of(this, factory).get(SellersViewModel::class.java)
+        orderViewModel = ViewModelProvider(requireActivity()).get(OrderViewModel::class.java)
+        sellersViewModel = ViewModelProvider(requireActivity()).get(SellersViewModel::class.java)
         sellersViewModel.getSellers()
         orderViewModel.fetchPendingOrder()
-
         observe()
 
 
@@ -42,7 +38,7 @@ class CheckoutFragment : BaseFragment<CheckoutScreenBinding>() {
     private fun observe() {
         orderViewModel.order.observe(viewLifecycleOwner, Observer {
             binding.orderAtCheckout = it
-            binding.youPay.text = "You pay " + binding.orderAtCheckout!!.orderValue
+            binding.youPay.text = "You pay " + binding.orderAtCheckout?.orderValue ?: "20"
         })
     }
 
@@ -64,11 +60,9 @@ class CheckoutFragment : BaseFragment<CheckoutScreenBinding>() {
         }
 
 
-        binding.toolbarBack.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                findNavController().navigateUp()
-            }
-        })
+        binding.toolbarBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
 

@@ -1,16 +1,15 @@
 package com.davevarga.giftpoint.viewmodels
 
-import android.app.Application
 import android.content.Context
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.repositories.Repository
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-class SignInViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
-
-    private val repository = Repository()
+@HiltViewModel
+class SignInViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
     fun getMAuth() = repository.mAuth
     fun getUser() = repository.currentUser

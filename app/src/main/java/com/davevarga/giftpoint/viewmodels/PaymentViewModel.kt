@@ -1,34 +1,28 @@
 package com.davevarga.giftpoint.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import com.davevarga.giftpoint.repositories.Repository
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FieldPath
-import com.google.firebase.firestore.Query
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-class PaymentViewModel @Inject constructor(application: Application) :
-    AndroidViewModel(application) {
-
-    private val repository = Repository()
+@HiltViewModel
+class PaymentViewModel @Inject constructor(private val repository: Repository) :
+    ViewModel() {
 
     private val db = repository.db
-
     private lateinit var paymentCollection: CollectionReference
 
     fun getPaymentCollection(): CollectionReference {
         paymentCollection = db
-//            .collection("payments")
-            .collection("stripe_customers").document(repository.currentUser?.uid?:"")
+            .collection("stripe_customers").document(repository.currentUser?.uid ?: "")
             .collection("payments")
 
         return paymentCollection
     }
 
 
-
-    }
+}
 
 
 

@@ -6,9 +6,8 @@ import com.stripe.android.PaymentConfiguration
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
-
 @HiltAndroidApp
-class BaseApplication @Inject constructor() : Application() {
+class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()

@@ -7,16 +7,18 @@ import com.davevarga.giftpoint.models.Seller
 import com.davevarga.giftpoint.repositories.Repository
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.Query
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-class SellersViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
+@HiltViewModel
+class SellersViewModel @Inject constructor(repository: Repository) : ViewModel() {
 
     private val db = repository.db
     private val sellerRef = db.collection("sellers")
     private lateinit var options: FirestoreRecyclerOptions<Seller>
     lateinit var selectedItem: String
 
-    val sellerList = mutableListOf<Seller>()
+    private val sellerList = mutableListOf<Seller>()
     val sellerNameList = mutableListOf<String>()
 
     fun sortSeller(): Seller {

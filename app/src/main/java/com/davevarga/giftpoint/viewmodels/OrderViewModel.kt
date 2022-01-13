@@ -9,11 +9,12 @@ import androidx.lifecycle.viewModelScope
 import com.davevarga.giftpoint.models.Order
 import com.davevarga.giftpoint.repositories.Repository
 import com.google.firebase.firestore.ktx.toObject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-class OrderViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
+@HiltViewModel
+class OrderViewModel @Inject constructor(repository: Repository) : ViewModel() {
 
     private val db = repository.db
     private val orderRef = db.collection("orders")
@@ -25,7 +26,7 @@ class OrderViewModel @Inject constructor(private val repository: Repository) : V
 
         viewModelScope.launch {
             orderRef.document("first")
-                .set(newOrder as Order)
+                .set(newOrder)
                 .addOnSuccessListener {
                     Log.d(
                         ContentValues.TAG,
@@ -73,7 +74,7 @@ class OrderViewModel @Inject constructor(private val repository: Repository) : V
 
     fun isCartEmpty() = order.value == null
 
-    fun getCouponRef(): HashMap<String, out Any> {
+    fun getCouponRef(): HashMap<String, Any> {
         fetchPendingOrder()
         val amountToPay = order.value!!.orderValue.replace("$", "").plus("00").toInt()
         return hashMapOf(

@@ -23,32 +23,31 @@ import com.davevarga.giftpoint.viewmodels.OrderViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@AndroidEntryPoint
 class DetailFragment : BaseFragment<DetailsScreenBinding>() {
 
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
     lateinit var viewModel: OrderViewModel
 
     lateinit var couponValue: String
-    private val args: DetailFragmentArgs by navArgs()
+    private val args by navArgs<DetailFragmentArgs>()
     private var namesEmpty: Boolean = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        viewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(OrderViewModel::class.java)
         viewModel.fetchPendingOrder()
         couponValue = Coupon.TEN.couponValue
 
         checkFields()
         setBindings()
+        setUpImageLoading(view)
+    }
+
+    private fun setUpImageLoading(view: View) {
         Glide.with(view)
             .load(args.sellerDetails?.productImage)
             .into(binding.backgroundStill)
-
-
     }
 
     private fun setBindings() {
@@ -61,11 +60,9 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
 
         binding.seller = args.sellerDetails
 
-        binding.toolbarBack.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                findNavController().navigateUp()
-            }
-        })
+        binding.toolbarBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
 
         binding.recipientName.addTextChangedListener(createTextWatcher())

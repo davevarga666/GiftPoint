@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.SignInScreenBinding
-import com.davevarga.giftpoint.factory.SignInFactory
 import com.davevarga.giftpoint.viewmodels.SignInViewModel
 import com.google.android.gms.auth.api.credentials.CredentialPickerConfig.Prompt.SIGN_IN
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -17,30 +15,26 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider.getCredential
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
-@AndroidEntryPoint
 class SignInFragment : BaseFragment<SignInScreenBinding>() {
 
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-    lateinit var viewModel: SignInViewModel
-
+    private lateinit var viewModel: SignInViewModel
     private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this, SignInFactory(requireActivity().application))
-            .get(SignInViewModel::class.java)
-
-        binding.signInBtn.setOnClickListener {
-            signIn()
-        }
-
+        viewModel = ViewModelProvider(requireActivity()).get(SignInViewModel::class.java)
         googleSignInClient =
             GoogleSignIn.getClient(requireActivity(), viewModel.getMyGso(requireContext()))
 
+        setUpBindings()
         proceed()
+    }
+
+    private fun setUpBindings() {
+        binding.signInBtn.setOnClickListener {
+            signIn()
+        }
     }
 
     private fun proceed() {
