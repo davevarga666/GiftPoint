@@ -7,19 +7,19 @@
 
         <variable
             name="seller"
-            type="com.davevarga.giftpoint.models.Seller" />
+            type="com.davevarga.giftpoint.model.Seller" />
 
         <variable
             name="sender"
-            type="com.davevarga.giftpoint.models.Sender" />
+            type="com.davevarga.giftpoint.model.Sender" />
 
         <variable
             name="recipient"
-            type="com.davevarga.giftpoint.models.Recipient" />
+            type="com.davevarga.giftpoint.model.Recipient" />
 
         <variable
             name="coupon"
-            type="com.davevarga.giftpoint.models.Coupon" />
+            type="com.davevarga.giftpoint.model.Coupon" />
 
 
     </data>

@@ -1,4 +1,4 @@
-package com.davevarga.giftpoint.ui
+package com.davevarga.giftpoint.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,22 +8,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.SellerListItemBinding
-import com.davevarga.giftpoint.models.Seller
+import com.davevarga.giftpoint.model.Seller
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class SellerRecyclerAdapter(
     options: FirestoreRecyclerOptions<Seller>,
-    var clickListener: SellerClickListener
+    private val clickListener: SellerClickListener
 ) :
     FirestoreRecyclerAdapter<Seller, SellerRecyclerAdapter.SellerViewHolder>(options) {
 
-    lateinit var binding: SellerListItemBinding
+    private lateinit var binding: SellerListItemBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SellerViewHolder {
-
         val inflater = LayoutInflater.from(parent.context)
-
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.seller_list_item,
@@ -62,10 +60,8 @@ class SellerRecyclerAdapter(
                 .into(binding.couponImage)
 
             itemView.setOnClickListener {
-                clickListener.onItemClick(seller, adapterPosition)
+                clickListener.onItemClick(seller, bindingAdapterPosition)
             }
-
-
         }
     }
 

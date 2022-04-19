@@ -1,20 +1,21 @@
-package com.davevarga.giftpoint.viewmodels
+package com.davevarga.giftpoint.viewmodel
 
 import android.content.ContentValues
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.davevarga.giftpoint.models.Seller
-import com.davevarga.giftpoint.repositories.Repository
+import com.davevarga.giftpoint.model.Seller
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SellersViewModel @Inject constructor(repository: Repository) : ViewModel() {
+class SellersViewModel @Inject constructor(
+    private val firestore: FirebaseFirestore
+) : ViewModel() {
 
-    private val db = repository.db
-    private val sellerRef = db.collection("sellers")
+    private val sellerRef = firestore.collection("sellers")
     private lateinit var options: FirestoreRecyclerOptions<Seller>
     lateinit var selectedItem: String
 

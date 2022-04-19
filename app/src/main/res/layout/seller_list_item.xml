@@ -8,7 +8,7 @@
 
         <variable
             name="seller"
-            type="com.davevarga.giftpoint.models.Seller" />
+            type="com.davevarga.giftpoint.model.Seller" />
     </data>
 
     <androidx.cardview.widget.CardView

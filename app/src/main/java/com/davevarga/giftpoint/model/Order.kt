@@ -1,4 +1,4 @@
-package com.davevarga.giftpoint.models
+package com.davevarga.giftpoint.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -9,6 +9,4 @@ data class Order(
     var recipient: Recipient = Recipient("", ""),
     var seller: Seller = Seller("", "", "", "", "", ""),
     var sender: Sender = Sender("", "")
-) : Parcelable {
-
-}
+) : Parcelable

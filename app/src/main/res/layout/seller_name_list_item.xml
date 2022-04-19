@@ -5,7 +5,7 @@
     <data>
         <variable
             name="seller"
-            type="com.davevarga.giftpoint.models.Seller" />
+            type="com.davevarga.giftpoint.model.Seller" />
 
     </data>
 

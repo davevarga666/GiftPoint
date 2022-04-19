@@ -11,13 +11,25 @@
         tools:layout="@layout/home_screen">
         <action
             android:id="@+id/action_homeScreenFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
         <action
             android:id="@+id/action_homeScreenFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
+            app:destination="@id/searchFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
         <action
             android:id="@+id/action_homeScreenFragment_to_checkoutFragment"
-            app:destination="@id/checkoutFragment" />
+            app:destination="@id/checkoutFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
@@ -26,19 +38,27 @@
         tools:layout="@layout/details_screen">
         <action
             android:id="@+id/action_detailFragment_to_checkoutFragment"
-            app:destination="@id/checkoutFragment" />
+            app:destination="@id/checkoutFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
         <action
             android:id="@+id/action_detailFragment_to_homeScreenFragment"
-            app:destination="@id/homeScreenFragment" />
+            app:destination="@id/homeScreenFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
         <argument
             android:name="sellerDetails"
-            app:argType="com.davevarga.giftpoint.models.Seller"
+            app:argType="com.davevarga.giftpoint.model.Seller"
             app:nullable="true"
             android:defaultValue="@null"/>
 
         <argument
             android:name="orderDetails"
-            app:argType="com.davevarga.giftpoint.models.Order"
+            app:argType="com.davevarga.giftpoint.model.Order"
             app:nullable="true"
             android:defaultValue="@null"/>
     </fragment>
@@ -49,10 +69,18 @@
         tools:layout="@layout/search_fragment">
         <action
             android:id="@+id/action_searchFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+            app:destination="@id/detailFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
         <action
             android:id="@+id/action_searchFragment_to_homeScreenFragment"
-            app:destination="@id/homeScreenFragment" />
+            app:destination="@id/homeScreenFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/checkoutFragment"
@@ -61,22 +89,34 @@
         tools:layout="@layout/checkout_screen">
         <action
             android:id="@+id/action_checkoutFragment_to_homeScreenFragment"
-            app:destination="@id/homeScreenFragment" />
+            app:destination="@id/homeScreenFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
         <action
             android:id="@+id/action_checkoutFragment_to_detailFragment"
-            app:destination="@id/detailFragment" >
+            app:destination="@id/detailFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out">
             <argument
                 android:name="sellerDetails"
-                app:argType="com.davevarga.giftpoint.models.Seller"/>
+                app:argType="com.davevarga.giftpoint.model.Seller"/>
         </action>
         <argument
             android:name="orderToCheckout"
-            app:argType="com.davevarga.giftpoint.models.Order"
+            app:argType="com.davevarga.giftpoint.model.Order"
             android:defaultValue="@null"
             app:nullable="true"/>
         <action
             android:id="@+id/action_checkoutFragment_to_paymentInitFragment"
-            app:destination="@id/paymentInitFragment" />
+            app:destination="@id/paymentInitFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -84,7 +124,11 @@
         android:label="SignInFragment" >
         <action
             android:id="@+id/action_signInFragment_to_homeScreenFragment"
-            app:destination="@id/homeScreenFragment" />
+            app:destination="@id/homeScreenFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/paymentInitFragment"
@@ -93,9 +137,17 @@
         <action
             android:id="@+id/action_paymentInitFragment_to_homeScreenFragment"
             app:destination="@id/homeScreenFragment"
-            app:popUpTo="@id/homeScreenFragment" />
+            app:popUpTo="@id/homeScreenFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
         <action
             android:id="@+id/action_paymentInitFragment_to_checkoutFragment"
-            app:destination="@id/checkoutFragment" />
+            app:destination="@id/checkoutFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
 </navigation>

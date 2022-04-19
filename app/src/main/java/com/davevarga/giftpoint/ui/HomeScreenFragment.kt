@@ -1,85 +1,59 @@
 package com.davevarga.giftpoint.ui
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.davevarga.giftpoint.R
+import com.davevarga.giftpoint.adapter.SellerClickListener
+import com.davevarga.giftpoint.adapter.SellerRecyclerAdapter
 import com.davevarga.giftpoint.databinding.HomeScreenBinding
-import com.davevarga.giftpoint.models.Seller
-import com.davevarga.giftpoint.viewmodels.OrderViewModel
-import com.davevarga.giftpoint.viewmodels.SellersViewModel
+import com.davevarga.giftpoint.model.Seller
+import com.davevarga.giftpoint.viewmodel.OrderViewModel
+import com.davevarga.giftpoint.viewmodel.SellersViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class HomeScreenFragment : BaseFragment<HomeScreenBinding>(), SellerClickListener {
 
-    lateinit var sellersViewModel: SellersViewModel
-    lateinit var orderViewModel: OrderViewModel
-
+    private val sellersViewModel: SellersViewModel by viewModels()
+    private val orderViewModel: OrderViewModel by viewModels()
     private lateinit var sellerAdapter: SellerRecyclerAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-
-        orderViewModel = ViewModelProvider(requireActivity()).get(OrderViewModel::class.java)
-        sellersViewModel = ViewModelProvider(requireActivity()).get(SellersViewModel::class.java)
-        setUpRecyclerView()
-        setUpBindings()
+        setRecyclerView()
+        setBindings()
         orderViewModel.fetchPendingOrder()
-
     }
 
-    private fun setUpBindings() {
-        binding.searchButton.setOnClickListener { view: View ->
+    private fun setBindings() {
+        binding.searchButton.setOnClickListener {
             findNavController().navigate(R.id.action_homeScreenFragment_to_searchFragment)
         }
 
         binding.cart.setOnClickListener {
-                if (orderViewModel.isCartEmpty()) {
-                    Toast.makeText(requireContext(), "Cart is empty", Toast.LENGTH_SHORT).show()
-                } else {
-                    findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
-                }
+            if (orderViewModel.isCartEmpty()) {
+                Toast.makeText(requireContext(), "Cart is empty", Toast.LENGTH_SHORT).show()
+            } else {
+                findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
             }
+        }
 
-        binding.cart.setOnClickListener{
-                if (orderViewModel.isCartEmpty()) {
-                    Toast.makeText(requireContext(), "Cart is empty", Toast.LENGTH_SHORT).show()
-                } else {
-                    findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
-                }
+        binding.cart.setOnClickListener {
+            if (orderViewModel.isCartEmpty()) {
+                Toast.makeText(requireContext(), "Cart is empty", Toast.LENGTH_SHORT).show()
+            } else {
+                findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
             }
+        }
 
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.home_menu, menu)
-//    }
-
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return when (item.itemId) {
-//            R.id.action_cart -> {
-//                if (orderViewModel.isCartEmpty()) {
-//                    Toast.makeText(requireContext(), "Cart is empty", Toast.LENGTH_SHORT).show()
-//                } else {
-//                    findNavController().navigate(R.id.action_homeScreenFragment_to_checkoutFragment)
-//                }
-//                true
-//            }
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
-
-    fun setUpRecyclerView() {
-
+    private fun setRecyclerView() {
         sellerAdapter = SellerRecyclerAdapter(sellersViewModel.getOptions(), this)
         binding.recyclerView.apply {
             setHasFixedSize(true)

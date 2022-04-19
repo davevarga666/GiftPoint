@@ -1,4 +1,4 @@
-package com.davevarga.giftpoint.utils
+package com.davevarga.giftpoint.util
 
 import android.content.Context
 import com.bumptech.glide.Glide

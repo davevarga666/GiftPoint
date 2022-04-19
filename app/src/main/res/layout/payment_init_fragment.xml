@@ -7,7 +7,7 @@
 
         <variable
             name="order"
-            type="com.davevarga.giftpoint.models.Order" />
+            type="com.davevarga.giftpoint.model.Order" />
 
     </data>
 

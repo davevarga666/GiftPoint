@@ -64,4 +64,5 @@
     <string name="payment">Payment</string>
     <string name="please_pay">Please pay</string>
     <string name="cancel_button">Cancel</string>
+    <string name="youpay">You pay </string>
 </resources>

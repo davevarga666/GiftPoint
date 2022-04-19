@@ -5,28 +5,30 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.davevarga.giftpoint.R
+import com.davevarga.giftpoint.adapter.SellerClickListener
 import com.davevarga.giftpoint.databinding.SearchFragmentBinding
-import com.davevarga.giftpoint.models.Seller
-import com.davevarga.giftpoint.viewmodels.SellersViewModel
+import com.davevarga.giftpoint.model.Seller
+import com.davevarga.giftpoint.viewmodel.SellersViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFragment : BaseFragment<SearchFragmentBinding>(),
     SellerClickListener {
 
-    lateinit var viewModel: SellersViewModel
+    private val viewModel: SellersViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-        viewModel = ViewModelProvider(requireActivity()).get(SellersViewModel::class.java)
         viewModel.getSellers()
-        setupBindings(setUpAdapter())
+        setBindings(setAdapter())
 
     }
 
-    private fun setUpAdapter(): ArrayAdapter<String> {
+    private fun setAdapter(): ArrayAdapter<String> {
         val adapter =
             ArrayAdapter(
                 requireContext(),
@@ -37,7 +39,7 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>(),
         return adapter
     }
 
-    private fun setupBindings(adapter: ArrayAdapter<String>) {
+    private fun setBindings(adapter: ArrayAdapter<String>) {
         binding.toolbarBack.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -68,7 +70,7 @@ class SearchFragment : BaseFragment<SearchFragmentBinding>(),
 
 
         binding.businessListView
-            .setOnItemClickListener { parent, view, position, id ->
+            .setOnItemClickListener { parent, _, position, _ ->
                 viewModel.selectedItem = parent.getItemAtPosition(position) as String
                 val action =
                     SearchFragmentDirections.actionSearchFragmentToDetailFragment(viewModel.sortSeller())

@@ -1,14 +1,11 @@
-package com.davevarga.giftpoint.utils
+package com.davevarga.giftpoint.util
 
 import android.util.Log
-import androidx.annotation.Size
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.functions.FirebaseFunctionsException
 import com.google.firebase.functions.ktx.functions
 import com.google.firebase.ktx.Firebase
 import com.stripe.android.EphemeralKeyProvider
 import com.stripe.android.EphemeralKeyUpdateListener
-import java.io.IOException
 
 class FirebaseEphemeralKeyProvider: EphemeralKeyProvider {
 

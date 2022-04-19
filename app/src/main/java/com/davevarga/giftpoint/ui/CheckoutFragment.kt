@@ -1,44 +1,40 @@
 package com.davevarga.giftpoint.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.CheckoutScreenBinding
-import com.davevarga.giftpoint.viewmodels.OrderViewModel
-import com.davevarga.giftpoint.viewmodels.SellersViewModel
+import com.davevarga.giftpoint.viewmodel.OrderViewModel
+import com.davevarga.giftpoint.viewmodel.SellersViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class CheckoutFragment : BaseFragment<CheckoutScreenBinding>() {
 
-    lateinit var orderViewModel: OrderViewModel
-    lateinit var sellersViewModel: SellersViewModel
+    private val orderViewModel: OrderViewModel by viewModels()
+    private val sellersViewModel: SellersViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
-
         bindButtons()
-        orderViewModel = ViewModelProvider(requireActivity()).get(OrderViewModel::class.java)
-        sellersViewModel = ViewModelProvider(requireActivity()).get(SellersViewModel::class.java)
         sellersViewModel.getSellers()
         orderViewModel.fetchPendingOrder()
         observe()
-
-
     }
 
+    @SuppressLint("SetTextI18n")
     private fun observe() {
-        orderViewModel.order.observe(viewLifecycleOwner, Observer {
+        orderViewModel.order.observe(viewLifecycleOwner, {
             binding.orderAtCheckout = it
-            binding.youPay.text = "You pay " + binding.orderAtCheckout?.orderValue ?: "20"
+            binding.youPay.text =
+                getString(R.string.youpay) + " " +  binding.orderAtCheckout?.orderValue
         })
     }
 

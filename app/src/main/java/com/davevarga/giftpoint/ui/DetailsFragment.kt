@@ -8,26 +8,24 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.DetailsScreenBinding
-import com.davevarga.giftpoint.models.Coupon
-import com.davevarga.giftpoint.models.Order
-import com.davevarga.giftpoint.models.Recipient
-import com.davevarga.giftpoint.models.Sender
-import com.davevarga.giftpoint.viewmodels.OrderViewModel
+import com.davevarga.giftpoint.model.Coupon
+import com.davevarga.giftpoint.model.Order
+import com.davevarga.giftpoint.model.Recipient
+import com.davevarga.giftpoint.model.Sender
+import com.davevarga.giftpoint.viewmodel.OrderViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class DetailFragment : BaseFragment<DetailsScreenBinding>() {
 
-    lateinit var viewModel: OrderViewModel
-
-    lateinit var couponValue: String
+    private val viewModel: OrderViewModel by viewModels()
+    private lateinit var couponValue: String
     private val args by navArgs<DetailFragmentArgs>()
     private var namesEmpty: Boolean = true
 
@@ -35,11 +33,9 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        viewModel = ViewModelProvider(requireActivity()).get(OrderViewModel::class.java)
         viewModel.fetchPendingOrder()
         couponValue = Coupon.TEN.couponValue
-
-        checkFields()
+        namesEmpty = viewModel.checkFields(binding.recipientName.toString(), binding.senderName.toString())
         setBindings()
         setUpImageLoading(view)
     }
@@ -51,13 +47,11 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
     }
 
     private fun setBindings() {
-
-        binding.buyNowBtn.setEnabled(false)
+        binding.buyNowBtn.isEnabled = false
         binding.senderName.setText(viewModel.user?.displayName)
         binding.senderEmail.setText(viewModel.user?.email)
         binding.recipientName.setText(viewModel.order.value?.recipient?.recipientName ?: "")
         binding.recipientEmail.setText(viewModel.order.value?.recipient?.recipientEmail ?: "")
-
         binding.seller = args.sellerDetails
 
         binding.toolbarBack.setOnClickListener {
@@ -71,31 +65,24 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
         binding.senderEmail.addTextChangedListener(createTextWatcher())
 
         binding.buyNowBtn.setOnClickListener {
-            checkFields()
+            viewModel.checkFields(binding.recipientName.toString(), binding.senderName.toString())
             viewModel.insert(addOrder())
 
             val action = DetailFragmentDirections.actionDetailFragmentToCheckoutFragment(addOrder())
             findNavController().navigate(action)
         }
 
-        binding.toggleGroup.addOnButtonCheckedListener { group, checkedId, isChecked ->
+        binding.toggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
-                when (checkedId) {
-                    R.id.btn10 -> couponValue = Coupon.TEN.couponValue
-                    R.id.btn20 -> couponValue = Coupon.TWENTY.couponValue
-                    R.id.btn50 -> couponValue = Coupon.FIFTY.couponValue
-                    R.id.btn100 -> couponValue = Coupon.HUNDRED.couponValue
-                    else -> couponValue = Coupon.ZERO.couponValue
+                couponValue = when (checkedId) {
+                    R.id.btn10 -> Coupon.TEN.couponValue
+                    R.id.btn20 -> Coupon.TWENTY.couponValue
+                    R.id.btn50 -> Coupon.FIFTY.couponValue
+                    R.id.btn100 -> Coupon.HUNDRED.couponValue
+                    else -> Coupon.ZERO.couponValue
                 }
             }
         }
-
-
-    }
-
-    private fun checkFields() {
-        namesEmpty =
-            binding.recipientName.toString().length == 0 && binding.senderName.toString().length == 0
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -116,7 +103,7 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
         }
     }
 
-    fun addOrder(): Order {
+    private fun addOrder(): Order {
         val seller = binding.seller
         val sender = Sender(binding.senderName.text.toString(), binding.senderEmail.text.toString())
         val recipient = Recipient(
@@ -133,14 +120,13 @@ class DetailFragment : BaseFragment<DetailsScreenBinding>() {
 
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
                 if (charSequence.toString().isEmailValid() && !namesEmpty) {
-                    binding.buyNowBtn.setEnabled(true)
+                    binding.buyNowBtn.isEnabled = true
                 }
             }
 
             override fun afterTextChanged(editable: Editable) {
             }
         }
-
     }
 
     fun String.isEmailValid(): Boolean {

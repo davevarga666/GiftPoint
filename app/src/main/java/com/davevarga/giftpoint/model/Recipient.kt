@@ -1,13 +1,10 @@
-package com.davevarga.giftpoint.models
+package com.davevarga.giftpoint.model
 
 import android.os.Parcelable
-import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Recipient(
     var recipientName: String = "",
     var recipientEmail: String = ""
-) : Parcelable {
-
-}
+) : Parcelable

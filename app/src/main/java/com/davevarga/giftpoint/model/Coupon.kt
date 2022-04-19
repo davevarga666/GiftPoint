@@ -1,4 +1,4 @@
-package com.davevarga.giftpoint.models
+package com.davevarga.giftpoint.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

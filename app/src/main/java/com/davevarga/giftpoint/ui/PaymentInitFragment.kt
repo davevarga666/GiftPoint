@@ -7,24 +7,25 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.davevarga.giftpoint.BuildConfig.STRIPE_API_KEY
 import com.davevarga.giftpoint.R
 import com.davevarga.giftpoint.databinding.PaymentInitFragmentBinding
-import com.davevarga.giftpoint.utils.FirebaseEphemeralKeyProvider
-import com.davevarga.giftpoint.viewmodels.OrderViewModel
-import com.davevarga.giftpoint.viewmodels.PaymentViewModel
+import com.davevarga.giftpoint.util.FirebaseEphemeralKeyProvider
+import com.davevarga.giftpoint.viewmodel.OrderViewModel
+import com.davevarga.giftpoint.viewmodel.PaymentViewModel
 import com.stripe.android.*
 import com.stripe.android.model.ConfirmPaymentIntentParams
 import com.stripe.android.model.PaymentMethod
 import com.stripe.android.view.BillingAddressFields
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
 
-    private lateinit var paymentViewModel: PaymentViewModel
-    private lateinit var orderViewModel: OrderViewModel
-
+    private val paymentViewModel: PaymentViewModel by viewModels()
+    private val orderViewModel: OrderViewModel by viewModels()
     private var flag = false
     private lateinit var paymentSession: PaymentSession
     private lateinit var selectedPaymentMethod: PaymentMethod
@@ -43,9 +44,6 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
         flag = true
         binding.payButton.isVisible = false
         binding.payButton.isEnabled = true
-
-        paymentViewModel = ViewModelProvider(requireActivity())[PaymentViewModel::class.java]
-        orderViewModel = ViewModelProvider(requireActivity())[OrderViewModel::class.java]
         orderViewModel.fetchPendingOrder()
         observe()
 
@@ -61,7 +59,7 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
     private fun observe() {
         orderViewModel.order.observe(viewLifecycleOwner, {
             binding.order = it
-            binding.checkoutSummary.text = binding.order!!.orderValue
+            binding.checkoutSummary.text = binding.order?.orderValue
         })
     }
 
@@ -82,7 +80,6 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
 
     private fun confirmPayment(paymentMethodId: String) {
         initPaymentCollection(paymentMethodId)
-
     }
 
     private fun initPaymentCollection(paymentMethodId: String) {
@@ -125,7 +122,7 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
                         }
                     }
                 }
-                .addOnFailureListener { e ->
+                .addOnFailureListener {
                     Log.i("PaymentInit", "payment failed")
                 }
 
@@ -137,7 +134,6 @@ class PaymentInitFragment : BaseFragment<PaymentInitFragmentBinding>() {
         setPaymentSessionDetails()
         Log.i("PaymentInit", "payment set up")
         initPaymentSession()
-
     }
 
     private fun initPaymentSession() {
